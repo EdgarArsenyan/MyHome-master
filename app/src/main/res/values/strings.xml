@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="edt_masked_custom_mobile_hint">Phone  (374)93-000-000</string>
+    <string name="edt_masked_date_hint">12/12/2016</string>
+    <string name="save">SAVE</string>
+    <string name="surname">Surname</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+    <string name="name">Name</string>
+    <string name="tab_text_1">SALE</string>
+    <string name="tab_text_2">RENT</string>
+    <string name="tab_text_3">HOTEL</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_search_category">SearchCategoryActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="search_category">Search Category</string>
+    <string name="search_type">Search Type</string>
+    <string name="price">Price</string>
+    <string name="location">Location</string>
+    <string name="search">Search</string>
+    <string name="category">Category</string>
+    <string name="type">Type</string>
+    <string name="later">later</string>
+    <string name="enter_your_email">Enter Your email</string>
+    <string name="enter_your_password">Enter Your password</string>
+    <string name="loading">Loading…</string>
+    <string name="you_could_be_here">You could be here</string>
+    <string name="example">Example: Բնակարանը ժամանակակից նորոգումով, առանձին ննջարան, հյուրասենյակ ստուդիո, ջեռուցում:</string>
+    <string-array name="location">
+        <item>Yerevan(All)</item>
+        <item>Ajapnyak</item>
+        <item>Arabkir</item>
+        <item>Avan</item>
+        <item>Davitashen</item>
+        <item>Erebouni</item>
+        <item>Kanaker-Zeytun</item>
+        <item>Kentron</item>
+        <item>Malatia-Sebastia</item>
+        <item>Nor Norq</item>
+        <item>Norq-Marash</item>
+        <item>Nubarashen</item>
+        <item>Shengavit</item>
+    </string-array>
+    <string-array name="category">
+        <item>RENT</item>
+        <item>SALE</item>
+    </string-array>
+    <string-array name="type">
+        <item>APPARTMENT</item>
+        <item>HOUSE</item>
+        <item>COMERCIAL</item>
+    </string-array>
+    <string-array name="numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10 and more</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="map">Map</string>
+    <string name="favorite">Favorite</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

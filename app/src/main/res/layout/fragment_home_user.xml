@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.HomeUserFragment"
+    android:background="@color/colorAccent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="200dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Create Account or Log In"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30dp" />
+
+
+        <ImageView
+            android:id="@+id/create_img"
+            android:layout_width="@dimen/button_wigth"
+            android:layout_height="@dimen/button_heigth"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/fab_max_margin"
+            android:layout_weight="1"
+            android:background="@drawable/ok" />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>
