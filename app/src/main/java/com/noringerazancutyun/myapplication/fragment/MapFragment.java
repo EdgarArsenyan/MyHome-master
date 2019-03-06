@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.EmailPasswordActivity;
+import com.noringerazancutyun.myapplication.activity.StatementInfoActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,7 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //                if (marker.getTitle().equals("Yerevan")){
 //                    Toast.makeText(getContext(), "Clicked "+ marker.getTitle(), Toast.LENGTH_SHORT).show();
 //                }
-                Intent intent = new Intent(getContext(), EmailPasswordActivity.class);
+                Intent intent = new Intent(getContext(), StatementInfoActivity.class);
                 startActivity(intent);
                 return false;
             }
