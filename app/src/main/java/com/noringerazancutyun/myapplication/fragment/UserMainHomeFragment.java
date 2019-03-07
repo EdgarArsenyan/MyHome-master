@@ -161,7 +161,9 @@ public class UserMainHomeFragment extends Fragment {
 
     private void userSetImage() {
 
-        Glide.with(getContext()).load(user.getmImageUrl()).placeholder(R.drawable.avatar_icon)
+        Glide.with(getContext())
+                .load(user.getmImageUrl())
+                .placeholder(R.drawable.avatar_icon)
                 .fitCenter().into(mUserProfileImage);
     }
 

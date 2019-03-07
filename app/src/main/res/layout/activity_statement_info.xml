@@ -17,21 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
-            app:contentScrim="@color/colorPrimary"
-            app:title="@string/app_name"
+            app:contentScrim="@color/colorPrimaryDark"
             >
 
             <ImageView
+                android:id="@+id/stat_image"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:src="@drawable/colapse"
                 android:scaleType="centerCrop"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
 
             <android.support.v7.widget.Toolbar
@@ -46,21 +40,319 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/stat_favorite"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/like"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_marginEnd="32dp"
+        />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="8sp"
-            android:padding="16dp"
-            android:text="asdflkjj;s ;weoti moery mljert ghr'tphkm we49tugk'sekf merypl erjt "
-            android:textSize="20sp" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                >
+
+                <ImageView
+                    android:id="@+id/stat_user_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/avatar_icon" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="18dp"
+                        android:layout_height="32dp"
+                        app:srcCompat="@drawable/person" />
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="18dp"
+                        android:layout_height="32dp"
+                        app:srcCompat="@drawable/mail" />
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="18dp"
+                        android:layout_height="32dp"
+                        app:srcCompat="@drawable/phone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/stat_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:paddingTop="6dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Edgar Arsenyan"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/stat_user_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:paddingTop="6dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="edgararsenyan@gmail.com"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/stat_user_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:paddingTop="6dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="(374)96-448-555"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="120dp"
+                android:background="@color/colorPrimaryDark"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="122dp"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="8dp"
+                        app:srcCompat="@drawable/coin" />
+
+                    <TextView
+                        android:id="@+id/stat_price"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="10"
+                        android:textSize="24sp"
+                        android:textStyle="italic|bold"
+                        android:textColor="@color/colorPrimary"
+                        android:text="50000" />
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="8dp"
+                        app:srcCompat="@drawable/rooms" />
+
+                    <TextView
+                        android:id="@+id/stat_rooms"
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="0.5"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        android:text="3" />
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="32dp"
+                        app:srcCompat="@drawable/floors" />
+
+                    <TextView
+                        android:id="@+id/stat_floor"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="0.5"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        android:text="12" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="@dimen/fab_margin"
+                    android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="For" />
+
+                    <TextView
+                        android:id="@+id/stat_category"
+                        android:layout_width="167dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/appbar_padding_top"
+                        android:text="RENT"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Type" />
+
+                    <TextView
+                        android:id="@+id/stat_type"
+                        android:layout_width="167dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/appbar_padding_top"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:text="APPARTEMENT" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="@dimen/fab_margin"
+                    android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView13"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/address_2" />
+
+                    <TextView
+                        android:id="@+id/stat_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/appbar_padding_top"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Malatya-Sebastya, Zoravar Andraniki 24" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/fab_margin"
+                    android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/infos" />
+
+                    <TextView
+                        android:id="@+id/stat_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:layout_marginStart="@dimen/appbar_padding_top"
+                        android:layout_weight="1"
+                        android:text="@string/example" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
 
     </android.support.v4.widget.NestedScrollView>
 
 
 
+
+    <FrameLayout
+
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        tools:context=".fragment.MapFragment"
+        >
+
+        <fragment
+
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:context=".fragment.MapFragment"></fragment>
+
+    </FrameLayout>
+
+
+
 </android.support.design.widget.CoordinatorLayout>
+
