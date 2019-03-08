@@ -11,6 +11,9 @@ public class Statement {
     private String desc;
     private String statementImageurl;
 
+    public Statement() {
+    }
+
     public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc) {
         this.category = category;
         this.type = type;

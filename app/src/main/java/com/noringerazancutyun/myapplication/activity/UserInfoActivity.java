@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -228,68 +229,24 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             mProgressDialog.show();
 
             imageUri = data.getData();
-            final StorageReference myPath = mReference.child("USER BOX").child(imageUri.getLastPathSegment());
+            final StorageReference myPath = mReference.child("USERBOX").child(imageUri.getLastPathSegment() + ".jpg");
             myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    final UploadTask uploadTask = myPath.putFile(imageUri);
-
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    myPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                @Override
-                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        public void onSuccess(Uri uri) {
+                            mDataBaseReference.child(user.getUid()).child("mImageUrl").setValue(uri.toString());
 
-                                    urlImage = myPath.getDownloadUrl().toString();
-                                    return myPath.getDownloadUrl();
-                                }
-                            });
                         }
                     });
-
-//                    Task<Uri> newUri = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-//                    urlImage = (newUri.toString());
-//
-//                    mProgressDialog.dismiss();
                 }
             });
 
         }
-//            final UploadTask uploadTask = myPath.putFile(imageUri);
-//
-//            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                        @Override
-//                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//
-//                            urlImage = myPath.getDownloadUrl().toString();
-//                            return myPath.getDownloadUrl();
-//                        }
-//                    });
-//                }
-//            });
-//
-        }
 
-
-//    public Uri getRealPathFromURI(Uri uri) {
-//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-//        cursor.moveToFirst();
-//        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-//        return Uri.parse(cursor.getString(idx));
-//    }
-
-//    public String getPath(Uri uri) {
-//        String[] projection = { MediaStore.Images.Media.DATA };
-//        Cursor cursor = managedQuery(uri, projection, null, null, null);
-//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//        cursor.moveToFirst();
-//        return cursor.getString(column_index);
-//    }
+    }
 
 
 }

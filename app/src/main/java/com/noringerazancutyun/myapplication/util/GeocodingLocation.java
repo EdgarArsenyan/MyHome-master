@@ -17,6 +17,8 @@ public class GeocodingLocation {
 
     private static final String TAG = "GeocodingLocation";
 
+
+
     public static void getAddressFromLocation(final String locationAddress,
                                               final Context context, final Handler handler) {
         Thread thread = new Thread() {
