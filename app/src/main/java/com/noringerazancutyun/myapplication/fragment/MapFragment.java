@@ -7,9 +7,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,30 +24,41 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.EmailPasswordActivity;
 import com.noringerazancutyun.myapplication.activity.StatementInfoActivity;
 import com.noringerazancutyun.myapplication.models.Statement;
+import com.noringerazancutyun.myapplication.models.UserInform;
 import com.noringerazancutyun.myapplication.util.GeocodingLocation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    private DatabaseReference mDataBaseReference;
 
     private double lat, lng;
     Statement mStatement = new Statement();
-    String address = mStatement.getAddress();
-    List<Address> mAddress;
-    String locality;
-
     SupportMapFragment mapFragment;
     private GoogleMap mMap;
+
+
 
 
     public MapFragment() {
@@ -55,28 +68,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_map2, container, false);
+        View view = inflater.inflate(R.layout.fragment_map2, container, false);
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        mDataBaseReference = FirebaseDatabase.getInstance().getReference("Statement");
+
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if(mapFragment==null){
+        readStatementInfoFromDB();
+        if (mapFragment == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
             ft.replace(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
-        return view ;
+        return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//       LatLng yerevan = new LatLng(40.190018, 44.509153);
         LatLng loc = getLatLngFromAddress();
         mMap.addMarker(new MarkerOptions().position(loc).title("Yerevan"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 11f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13f));
         mMap.isMyLocationEnabled();
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        Toast.makeText(getContext(), locality, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), mStatement.getRooms(), Toast.LENGTH_LONG).show();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -87,29 +104,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+
+
     }
 
-    private LatLng getLatLngFromAddress(){
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
+    private LatLng getLatLngFromAddress() {
+        List<Address> mAddress = new ArrayList<>();
+        Geocoder geoCoder = new Geocoder(getContext());
 
-                    Geocoder geoCoder = new Geocoder(getContext());
-                    List<Address> mAddress = geoCoder.getFromLocationName("London", 1);
-                    Address location = mAddress.get(0);
-                    locality = location.getLocality();
-                    lat = location.getLatitude();
-                    lng = location.getLongitude();
+        try {
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
+            mAddress = geoCoder.getFromLocationName(mStatement.getAddress(), 1);
 
-                }
-            }
-        };
-        thread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (mAddress.size() > 0) {
+            Address location = mAddress.get(0);
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+        }
         return new LatLng(lat, lng);
     }
+
+    private void readStatementInfoFromDB() {
+        mDataBaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mStatement = dataSnapshot.getValue(Statement.class);
+                Log.d(TAG, "onDataChange: " + mStatement.getAddress());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
 }

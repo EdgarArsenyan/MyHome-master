@@ -127,18 +127,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
 
     }
-//    private void writeFromDatabase(){
-//        if(userInfo.getmUserName()!=null && userInfo.getmUserSurname()!= null && userInfo.getmUserPhoneNumber() !=null) {
-//            mName.setText(userInfo.getmUserName());
-//            mSurname.setText(userInfo.getmUserSurname());
-//            mPhone.setText(userInfo.getmUserPhoneNumber());
-//        }else{
-//            mName.setText("Name");
-//            mSurname.setText("Surname");
-//            mPhone.setText(R.string.edt_masked_custom_mobile_hint);
-//        }
-//    }
-
 
     @Override
     public void onClick(View v) {
@@ -213,16 +201,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.show();
-//            imageUri = data.getData();
-//
-//            final StorageReference myPath = mReference.child("USER BOX").child(imageUri.getLastPathSegment());
-//            myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                   mProgressDialog.dismiss();
-//                }
-//            });
         } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
 
             mProgressDialog.setMessage("Loading...");

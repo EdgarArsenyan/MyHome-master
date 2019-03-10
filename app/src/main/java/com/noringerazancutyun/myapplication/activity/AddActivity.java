@@ -46,7 +46,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         ImageStatementBtn = findViewById(R.id.add_images);
         saveStatementBtn = findViewById(R.id.save_statement_btn);
 
-        Spinner categorySpiner = findViewById(R.id.category_spiner);
+        Spinner categorySpinner = findViewById(R.id.category_spiner);
         Spinner typeSpinner = findViewById(R.id.type_spiner);
         Spinner roomSpinner = findViewById(R.id.room_spinner);
         Spinner floorSpinner = findViewById(R.id.floor_spinner);
@@ -70,13 +70,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         floorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationAdaptewr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        categorySpiner.setAdapter(categoryAdapter);
+        categorySpinner.setAdapter(categoryAdapter);
         typeSpinner.setAdapter(typeAdapter);
         roomSpinner.setAdapter(roomAdapter);
         floorSpinner.setAdapter(floorAdapter);
         locationSpinner.setAdapter(locationAdaptewr);
 
-        categorySpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -153,10 +153,6 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         String desc = descText.getText().toString();
         String address = addressText.getText().toString();
         String price = priceText.getText().toString();
-        String image;
-//        if (ImagePath != null)
-//            image = ImagePath;
-//        else image = "no photo";
         userStatement = new Statement(mCategory, mType, price, mRooms, mFloor, mLocation, address, desc );
         mDataBaseReference.child(user.getUid()).setValue(userStatement);
     }

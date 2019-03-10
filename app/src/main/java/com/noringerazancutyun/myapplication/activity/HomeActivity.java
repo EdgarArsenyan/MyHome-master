@@ -6,22 +6,32 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.fragment.HomeUserFragment;
 import com.noringerazancutyun.myapplication.fragment.MapFragment;
 import com.noringerazancutyun.myapplication.fragment.FavoritListFragment;
 import com.noringerazancutyun.myapplication.fragment.UserMainHomeFragment;
+import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.util.MyFirebase;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class HomeActivity extends AppCompatActivity {
 
-MyFirebase firebase = new MyFirebase();
+
+    MyFirebase firebase = new MyFirebase();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,5 @@ MyFirebase firebase = new MyFirebase();
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }
