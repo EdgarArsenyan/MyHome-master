@@ -1,5 +1,8 @@
 package com.noringerazancutyun.myapplication.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Statement {
     private String category;
     private String type;
@@ -9,7 +12,6 @@ public class Statement {
     private String district;
     private String address;
     private String desc;
-    private String statementImageurl;
 
     public Statement() {
     }
@@ -89,11 +91,5 @@ public class Statement {
         this.desc = desc;
     }
 
-    public String getStatementImageurl() {
-        return statementImageurl;
-    }
 
-    public void setStatementImageurl(String image) {
-        this.statementImageurl = image;
-    }
 }

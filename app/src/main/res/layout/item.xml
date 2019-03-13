@@ -3,13 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/parent_layout"
+>
+
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/colapse"
+>
 
     <ImageView
         android:id="@+id/image_for_list"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/ic_delete_black_24dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+ />
+</android.support.v7.widget.CardView>
 
 </LinearLayout>

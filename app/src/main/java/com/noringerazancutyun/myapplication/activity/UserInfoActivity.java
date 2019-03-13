@@ -119,11 +119,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         String phone = mPhone.getText().toString();
         String email = user.getEmail();
         String image;
-        if (urlImage!= null)
-             image = urlImage;
-        else image = "no photo";
+        image = "no photo";
         userInfo = new UserInform(name, email, surname, phone, image);
-        mDataBaseReference.child(user.getUid()).setValue(userInfo);
+        mDataBaseReference.child(userInfo.getUserId()).setValue(userInfo);
 
 
     }
@@ -139,6 +137,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 Intent intent = new Intent(UserInfoActivity.this, HomeActivity.class);
                 startActivity(intent);
                 break;
+
         }
 
     }

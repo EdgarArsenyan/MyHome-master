@@ -7,7 +7,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +60,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     Statement mStatement = new Statement();
     SupportMapFragment mapFragment;
     private GoogleMap mMap;
+    private List<String> addressList;
 
 
 
@@ -84,16 +88,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         return view;
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng loc = getLatLngFromAddress();
-        mMap.addMarker(new MarkerOptions().position(loc).title("Yerevan"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13f));
+
         mMap.isMyLocationEnabled();
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        Toast.makeText(getContext(), mStatement.getRooms(), Toast.LENGTH_LONG).show();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -112,6 +112,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         List<Address> mAddress = new ArrayList<>();
         Geocoder geoCoder = new Geocoder(getContext());
 
+
+
         try {
 
             mAddress = geoCoder.getFromLocationName(mStatement.getAddress(), 1);
@@ -127,12 +129,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return new LatLng(lat, lng);
     }
 
+
+
+
     private void readStatementInfoFromDB() {
-        mDataBaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        mDataBaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mStatement = dataSnapshot.getValue(Statement.class);
-                Log.d(TAG, "onDataChange: " + mStatement.getAddress());
+                for(DataSnapshot myData: dataSnapshot.getChildren()) {
+                    mStatement = myData.getValue(Statement.class);
+                    Log.d(TAG, "onDataChange: " + mStatement.getAddress());
+
+                    LatLng loc = getLatLngFromAddress();
+                    mMap.addMarker(new MarkerOptions().position(loc).title("Yerevan"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13f));
+                }
+
             }
 
             @Override
@@ -141,7 +153,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
-
 
 }

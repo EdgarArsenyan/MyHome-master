@@ -13,8 +13,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.noringerazancutyun.myapplication.R;
+import com.noringerazancutyun.myapplication.models.UserInform;
 import com.noringerazancutyun.myapplication.util.MyFirebase;
 
 
@@ -28,8 +30,8 @@ public class EmailPasswordActivity extends BaseActivity implements
     private EditText mEmailField;
     private EditText mPasswordField;
     private ImageView mLoginImg, mCreateImg;
-//    private FirebaseAuth mAuth;
-//    private FirebaseAuth.AuthStateListener listener;
+    private UserInform user = new UserInform();
+
 
 
 
@@ -44,20 +46,6 @@ public class EmailPasswordActivity extends BaseActivity implements
         mCreateImg = findViewById(R.id.create_img_email_activity);
         mLoginImg.setOnClickListener(this);
         mCreateImg.setOnClickListener(this);
-
-//        mAuth = FirebaseAuth.getInstance();
-//        listener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user!=null){
-//                    Log.d(TAG, "User@ grancvec, useri ID" + user.getUid());
-//                }else{
-//                    Log.d(TAG, "User@ durs ekav ");
-//
-//                }
-//            }
-//        };
     }
 
     @Override
@@ -77,6 +65,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            user.setUserId(String.valueOf(System.currentTimeMillis()));
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = firebase.mAuth.getCurrentUser();
                             Intent intent = new Intent (EmailPasswordActivity.this, UserInfoActivity.class);

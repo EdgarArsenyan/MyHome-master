@@ -20,17 +20,19 @@
             app:contentScrim="@color/colorPrimaryDark"
             >
 
-            <ImageView
-                android:id="@+id/stat_image"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/stat_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:src="@drawable/colapse"
+                android:background="@drawable/colapse"
                 android:scaleType="centerCrop"/>
 
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:title="No Photo"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
 
@@ -42,12 +44,13 @@
 
     <ImageView
         android:id="@+id/stat_favorite"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:src="@drawable/like"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right|end"
         android:layout_marginEnd="32dp"
+        android:elevation="@dimen/fab_margin"
         />
 
     <android.support.v4.widget.NestedScrollView

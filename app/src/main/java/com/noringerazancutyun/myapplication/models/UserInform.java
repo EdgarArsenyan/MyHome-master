@@ -1,7 +1,5 @@
 package com.noringerazancutyun.myapplication.models;
 
-import java.net.URL;
-
 public class UserInform {
 
     private String mUserName, mUserEmail, mUserSurname, mUserPhoneNumber;

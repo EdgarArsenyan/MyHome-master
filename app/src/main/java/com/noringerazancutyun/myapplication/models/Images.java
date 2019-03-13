@@ -4,27 +4,20 @@ import java.util.List;
 
 public class Images {
 
-    private String mUserPhoto;
-    private List<String> mHomeImage;
+    private String mHomeImage;
 
-    public Images(String mUserPhoto, List<String> mHomeImage) {
-        this.mUserPhoto = mUserPhoto;
-        this.mHomeImage = mHomeImage;
+    public Images() {
     }
 
-    public String getmUserPhoto() {
-        return mUserPhoto;
-    }
-
-    public void setmUserPhoto(String mUserPhoto) {
-        this.mUserPhoto = mUserPhoto;
-    }
-
-    public List<String> getmHomeImage() {
+    public String getmHomeImage() {
         return mHomeImage;
     }
 
-    public void setmHomeImage(List<String> mHomeImage) {
+    public void setmHomeImage(String mHomeImage) {
+        this.mHomeImage = mHomeImage;
+    }
+
+    public Images(String mHomeImage) {
         this.mHomeImage = mHomeImage;
     }
 }
