@@ -1,28 +1,25 @@
 package com.noringerazancutyun.myapplication.activity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +31,7 @@ import com.google.firebase.storage.UploadTask;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.models.Statement;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +40,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private static final int GALLERY_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
     private static final int CAMERA_PERMISSION_CODE = 10;
+    public static final int GPS_REQUEST_CODE = 20;
+    public static final int ADDRESS_REQUEST_CODE= 30;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -55,10 +55,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private String imagePath;
     private ImageView imageStatementBtn, saveStatementBtn, uploadImageBtn, homeImageView;
     private String mCategory, mType, mFloor, mRooms, mDesc, mAdress, mLocation, mPrice;
-
+    private double lat, lng;
 
     private Statement userStatement;
-
+    private ArrayList<String> imageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         descText = findViewById(R.id.desc_edit);
         descText.setSelectAllOnFocus(true);
-        addressText =findViewById(R.id.address_edit);
+        addressText = findViewById(R.id.address_edit);
         priceText = findViewById(R.id.price_edit);
 
         imageStatementBtn = findViewById(R.id.add_images);
@@ -84,12 +84,31 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         mReference = FirebaseStorage.getInstance().getReference("images").child(user.getUid());
-        mDataBaseReference = FirebaseDatabase.getInstance().getReference("images");
+        mDataBaseReference = FirebaseDatabase.getInstance().getReference("Statement").child(user.getUid());
         mProgressDialog = new ProgressDialog(AddActivity.this);
+
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestPermissions(new String[]{
+//                        Manifest.permission.ACCESS_FINE_LOCATION,
+//                        Manifest.permission.ACCESS_COARSE_LOCATION,
+//                        Manifest.permission.INTERNET
+//                },10);
+//            }
+//            return;
+//        }
+//
+//        @Override
+//        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        }
+//        manager.requestLocationUpdates("gps", 5000, 0, listener);
 
         saveStatementBtn.setOnClickListener(this);
         uploadImageBtn.setOnClickListener(this);
         imageStatementBtn.setOnClickListener(this);
+        addressText.setOnClickListener(this);
 
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this,R.array.category, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,R.array.type, android.R.layout.simple_spinner_item);
@@ -181,13 +200,37 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         });
     }
 
-    private void writeStatementInfoToDB() {
 
+    private void getLatLngFromAddress() {
+        List<Address> mAddress = new ArrayList<>();
+        Geocoder geoCoder = new Geocoder(AddActivity.this);
+
+
+
+        try {
+
+            mAddress = geoCoder.getFromLocationName(addressText.getText().toString(), 1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (mAddress.size() > 0) {
+            Address location = mAddress.get(0);
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+        }
+    }
+
+    private void writeStatementInfoToDB() {
+        final String uploadId = mDataBaseReference.push().getKey();
+
+
+        getLatLngFromAddress();
         mDesc = descText.getText().toString();
         mAdress = addressText.getText().toString();
         mPrice = priceText.getText().toString();
-        userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc);
-        mDataBaseReference.child(user.getUid()).setValue(userStatement);
+        userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList );
+        mDataBaseReference.child(uploadId).setValue(userStatement);
     }
 
 
@@ -206,13 +249,44 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 break;
             case (R.id.upload_images):
                 uploadFlie();
+                break;
+//            case (R.id.address_edit):
+//                final PopupMenu menu = new PopupMenu(AddActivity.this, addressText);
+//                menu.getMenuInflater().inflate(R.menu.popup_for_address, menu.getMenu());
+//                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()){
+//                            case (R.id.from_gps):
+////                                    Intent intent = new Intent(AddActivity.this, GPSResultFragment.class);
+////                                    startActivityForResult(intent, GPS_REQUEST_CODE );
+//                                break;
+//                            case(R.id.from_address):
+//                                mAdress = addressText.getText().toString();
+//                                break;
+//                            case(R.id.from_map):
+////                                Intent intent = new Intent(this, MapActivity.class);
+////                                startActivityForResult(intent, ADDRESS_REQUEST_CODE);
+//                                break;
+//
+//                        }
+//                        return true;
+//                    }
+//                });
+//                menu.show();
+//                break;
         }
 
     }
 
+//    private void GetLocFromGPS() {
+//
+//    }
+
     private void uploadFlie() {
          if(imageUri !=null){
              final StorageReference fileReference = mReference.child(System.currentTimeMillis() + ".jpg");
+
 
              fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                  @Override
@@ -221,7 +295,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                      fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                          @Override
                          public void onSuccess(Uri uri) {
-                             mDataBaseReference.child(uploadId).child("mHomeImage").setValue(uri.toString());
+//                             mDataBaseReference.child("mImages").child(uploadId).setValue(uri.toString());
+                             imageList.add(uri.toString());
 
                          }
                      });

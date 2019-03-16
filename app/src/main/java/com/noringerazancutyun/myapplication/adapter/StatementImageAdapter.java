@@ -17,6 +17,8 @@ import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.ImageActivity;
 import com.noringerazancutyun.myapplication.activity.StatementInfoActivity;
 import com.noringerazancutyun.myapplication.models.Images;
+import com.noringerazancutyun.myapplication.models.Statement;
+import com.noringerazancutyun.myapplication.models.UserInform;
 
 
 import java.util.List;
@@ -24,9 +26,9 @@ import java.util.List;
 public class StatementImageAdapter extends RecyclerView.Adapter<StatementImageAdapter.ImageViewHolder> {
 
     private Context context;
-    private List<Images> mImage;
+    private List<String> mImage;
 
-    public StatementImageAdapter(Context context, List<Images> mImage){
+    public StatementImageAdapter(Context context, List<String> mImage){
 
         this.context = context;
         this.mImage = mImage;
@@ -44,10 +46,10 @@ public class StatementImageAdapter extends RecyclerView.Adapter<StatementImageAd
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
 
-        Images image = mImage.get(position);
+        String image = mImage.get(position);
         Glide.with(context)
-                .load(image.getmHomeImage())
-                .centerCrop()
+                .load(image)
+                .centerInside()
                 .into(holder.imageView);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {

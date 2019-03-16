@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/from_gps"
+        android:title="From GPS"/>
+    <item
+        android:id="@+id/from_address"
+        android:title="Write your Address"/>
+    <item
+        android:id="@+id/from_map"
+        android:title="From Google Map"/>
+
+</menu>

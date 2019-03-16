@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,8 @@ import com.noringerazancutyun.myapplication.activity.UserInfoActivity;
 import com.noringerazancutyun.myapplication.models.UserInform;
 import com.noringerazancutyun.myapplication.util.MyFirebase;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.app.Activity.RESULT_OK;
 import static android.support.constraint.Constraints.TAG;
 
@@ -41,13 +44,13 @@ public class UserMainHomeFragment extends Fragment {
 
     FloatingActionButton mAddStatement;
     TextView mProfile, mNotification, mHistory, mStatement, mLogout, mUserName;
-    ImageView mUserProfileImage;
     MyFirebase firebase = new MyFirebase();
     UserInform user = new UserInform();
     private DatabaseReference mDataBaseReference;
     String userID;
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
+    CircleImageView  mUserProfileImage;
 
 
     public UserMainHomeFragment() {
@@ -163,6 +166,7 @@ public class UserMainHomeFragment extends Fragment {
 
         Glide.with(getContext())
                 .load(user.getmImageUrl())
+                .apply(RequestOptions.circleCropTransform())
                 .placeholder(R.drawable.avatar_icon)
                 .fitCenter()
                 .into(mUserProfileImage);

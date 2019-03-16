@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
 import com.noringerazancutyun.myapplication.models.Images;
+import com.noringerazancutyun.myapplication.models.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +30,13 @@ public class StatementInfoActivity extends AppCompatActivity{
     mStatFloor, mStatAddress, mStatDesc, mStatCategory, mStatType;
     ImageView mStatFavorite, mStatUserImage;
 
-    Images img = new Images();
     private FirebaseAuth mAuth;
     private FirebaseUser user;
 
     RecyclerView mRecycler;
     StatementImageAdapter imageAdapter;
     private DatabaseReference mDataref;
-    private List<Images> mImages;
+    private List<String> mImages;
     Toolbar toolbar;
       int s = 1;
 
@@ -62,43 +62,43 @@ public class StatementInfoActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
         mRecycler = findViewById(R.id.stat_recycler);
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false ));
         mImages = new ArrayList<>();
-        mDataref = FirebaseDatabase.getInstance().getReference("images");
+        mDataref = FirebaseDatabase.getInstance().getReference().child("Statement");
 
         recyclerConstructor();
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        toolbar.setTitle(String.valueOf(s) + " Photo");
-    }
+
 
     public void recyclerConstructor(){
 
         mDataref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                    Images images = postSnap.getValue(Images.class);
+                for(DataSnapshot postSnap: dataSnapshot.child(user.getUid()).child("mImages").getChildren()) {
+                    String images = postSnap.getValue(String.class);
                     mImages.add(images);
-                    s++;
                 }
                 imageAdapter = new StatementImageAdapter(StatementInfoActivity.this, mImages);
                 mRecycler.setAdapter(imageAdapter);
 
-
+                toolbar.setTitle("" + mImages.size() + " Photo");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
+
         });
 
     }

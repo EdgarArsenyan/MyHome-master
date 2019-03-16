@@ -57,10 +57,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private DatabaseReference mDataBaseReference;
 
     private double lat, lng;
-    Statement mStatement = new Statement();
     SupportMapFragment mapFragment;
     private GoogleMap mMap;
-    private List<String> addressList;
+
 
 
 
@@ -94,7 +93,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap.isMyLocationEnabled();
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -108,41 +106,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private LatLng getLatLngFromAddress() {
-        List<Address> mAddress = new ArrayList<>();
-        Geocoder geoCoder = new Geocoder(getContext());
-
-
-
-        try {
-
-            mAddress = geoCoder.getFromLocationName(mStatement.getAddress(), 1);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (mAddress.size() > 0) {
-            Address location = mAddress.get(0);
-            lat = location.getLatitude();
-            lng = location.getLongitude();
-        }
-        return new LatLng(lat, lng);
-    }
-
-
-
-
     private void readStatementInfoFromDB() {
         mDataBaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot myData: dataSnapshot.getChildren()) {
-                    mStatement = myData.getValue(Statement.class);
-                    Log.d(TAG, "onDataChange: " + mStatement.getAddress());
 
-                    LatLng loc = getLatLngFromAddress();
-                    mMap.addMarker(new MarkerOptions().position(loc).title("Yerevan"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13f));
+                     lat = myData.child("lat").getValue(Double.class);
+                     lng = myData.child("lng").getValue(Double.class);
+                    Log.d(TAG, "onDataChange: " + "" + lat + lng);
+
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Yerevan"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13f));
+
                 }
 
             }

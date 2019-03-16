@@ -28,9 +28,9 @@ public class ImageActivity extends AppCompatActivity {
     private FirebaseUser user;
 
     RecyclerView mRecycler;
-    ImageAdapter imageAdapter;
+    StatementImageAdapter imageAdapter;
     private DatabaseReference mDataref;
-    private List<Images> mImages;
+    private List<String> mImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class ImageActivity extends AppCompatActivity {
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false ));
         mImages = new ArrayList<>();
-        mDataref = FirebaseDatabase.getInstance().getReference("images");
+        mDataref = FirebaseDatabase.getInstance().getReference().child("Statement");
 
         recyclerConstructor();
     }
@@ -55,11 +55,11 @@ public class ImageActivity extends AppCompatActivity {
         mDataref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                    Images images = postSnap.getValue(Images.class);
+                for(DataSnapshot postSnap: dataSnapshot.child(user.getUid()).child("mImages").getChildren()) {
+                    String images = postSnap.getValue(String.class);
                     mImages.add(images);
                 }
-                imageAdapter = new ImageAdapter(ImageActivity.this, mImages);
+                imageAdapter = new StatementImageAdapter(ImageActivity.this, mImages);
                 mRecycler.setAdapter(imageAdapter);
 
             }

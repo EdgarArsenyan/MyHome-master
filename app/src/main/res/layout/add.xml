@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:text="$"
+                android:hint="$"
                 android:textColorHint="@color/texthint"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
@@ -195,7 +195,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/texthint"
-                android:text="Example: Amiryan 26" />
+                android:hint="Example: Amiryan 26" />
         </LinearLayout>
 
         <View
@@ -228,7 +228,7 @@
                 android:textColorHint="@color/texthint"
                 android:layout_marginStart="@dimen/appbar_padding_top"
                 android:layout_weight="1"
-                android:text="@string/example" />
+                android:hint="@string/example" />
 
 
         </LinearLayout>

@@ -12,11 +12,14 @@ public class Statement {
     private String district;
     private String address;
     private String desc;
+    private String mImages;
+    private double lat, lng;
+    private ArrayList<String> imageList;
 
     public Statement() {
     }
 
-    public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc) {
+    public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc, String mImages) {
         this.category = category;
         this.type = type;
         this.price = price;
@@ -25,6 +28,53 @@ public class Statement {
         this.district = district;
         this.address = address;
         this.desc = desc;
+        this.mImages = mImages;
+    }
+
+    public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc,double lat, double lng, ArrayList<String> imageList) {
+        this.category = category;
+        this.type = type;
+        this.price = price;
+        this.rooms = rooms;
+        this.floor = floor;
+        this.district = district;
+        this.address = address;
+        this.desc = desc;
+        this.lat = lat;
+        this.lng = lng;
+        this.imageList = imageList;
+    }
+
+    public ArrayList<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<String> imageList) {
+        this.imageList = imageList;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public String getmImages() {
+        return mImages;
+    }
+
+    public void setmImages(String mImages) {
+        this.mImages = mImages;
     }
 
     public String getCategory() {
