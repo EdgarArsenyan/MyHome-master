@@ -40,9 +40,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.noringerazancutyun.myapplication.R;
+import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.models.UserInform;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private DatabaseReference mDataBaseReference;
     private StorageReference mReference;
     private String userID;
-    private String urlImage;
+    private ArrayList<String> statId = new ArrayList<>();
      UserInform userInfo;
      private  Uri imageUri;
 
@@ -86,7 +88,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         userID = user.getUid();
 
         mSaveButton.setOnClickListener(this);
-//        writeFromDatabase();
 
 
     }
@@ -120,10 +121,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         String email = user.getEmail();
         String image;
         image = "no photo";
+        statId.add("no Stat");
         userInfo = new UserInform(name, email, surname, phone, image);
         mDataBaseReference.child(userInfo.getUserId()).setValue(userInfo);
-
-
     }
 
     @Override

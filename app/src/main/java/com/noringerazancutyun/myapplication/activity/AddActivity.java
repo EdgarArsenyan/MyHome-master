@@ -54,12 +54,12 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private static final int SELECT_PICTURE = 1;
     private String imagePath;
     private ImageView imageStatementBtn, saveStatementBtn, uploadImageBtn, homeImageView;
-    private String mCategory, mType, mFloor, mRooms, mDesc, mAdress, mLocation, mPrice;
+    private String mCategory, mType, mFloor, mRooms, mDesc, mAdress, mLocation, mPrice, userId;
     private double lat, lng;
 
     private Statement userStatement;
     private ArrayList<String> imageList = new ArrayList<>();
-
+    private ArrayList<String> statList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +84,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         mReference = FirebaseStorage.getInstance().getReference("images").child(user.getUid());
-        mDataBaseReference = FirebaseDatabase.getInstance().getReference("Statement").child(user.getUid());
+        mDataBaseReference = FirebaseDatabase.getInstance().getReference();
         mProgressDialog = new ProgressDialog(AddActivity.this);
 
 
@@ -222,15 +222,17 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void writeStatementInfoToDB() {
-        final String uploadId = mDataBaseReference.push().getKey();
 
+        final String uploadId = mDataBaseReference.push().getKey();
 
         getLatLngFromAddress();
         mDesc = descText.getText().toString();
         mAdress = addressText.getText().toString();
         mPrice = priceText.getText().toString();
-        userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList );
-        mDataBaseReference.child(uploadId).setValue(userStatement);
+        userId = user.getUid();
+        userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId );
+        mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+//        mDataBaseReference.child("User").child(user.getUid()).child("statId").setValue(statList);
     }
 
 
@@ -291,11 +293,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
              fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                  @Override
                  public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                     final String uploadId = mDataBaseReference.push().getKey();
                      fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                          @Override
                          public void onSuccess(Uri uri) {
-//                             mDataBaseReference.child("mImages").child(uploadId).setValue(uri.toString());
                              imageList.add(uri.toString());
 
                          }

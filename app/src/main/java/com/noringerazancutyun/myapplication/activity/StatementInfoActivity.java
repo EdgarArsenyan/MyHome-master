@@ -1,14 +1,24 @@
 package com.noringerazancutyun.myapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,27 +28,39 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
-import com.noringerazancutyun.myapplication.models.Images;
 import com.noringerazancutyun.myapplication.models.Statement;
+import com.noringerazancutyun.myapplication.models.UserInform;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatementInfoActivity extends AppCompatActivity{
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class StatementInfoActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
     TextView mStatName, mStatEmail, mStatphone, mStatPrice, mStatRooms,
     mStatFloor, mStatAddress, mStatDesc, mStatCategory, mStatType;
-    ImageView mStatFavorite, mStatUserImage;
+    ImageView mStatFavorite, callBtn;
+    CircleImageView mStatUserImage;
+
+    private GoogleMap mMap;
+
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    SupportMapFragment mapFragment;
+
 
     RecyclerView mRecycler;
     StatementImageAdapter imageAdapter;
     private DatabaseReference mDataref;
     private List<String> mImages;
-    Toolbar toolbar;
-      int s = 1;
+
+    private String myID;
+    private String userID;
+    private double lat, lng;
+    private Toolbar toolbar;
+
 
 
     @Override
@@ -57,7 +79,11 @@ public class StatementInfoActivity extends AppCompatActivity{
         mStatType = findViewById(R.id.stat_type);
         mStatFavorite = findViewById(R.id.stat_favorite);
         mStatUserImage = findViewById(R.id.stat_user_image);
+        callBtn = findViewById(R.id.call_btn);
         toolbar = findViewById(R.id.toolbar);
+
+//        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_statement);
+
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -70,9 +96,20 @@ public class StatementInfoActivity extends AppCompatActivity{
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false ));
         mImages = new ArrayList<>();
-        mDataref = FirebaseDatabase.getInstance().getReference().child("Statement");
+        mDataref = FirebaseDatabase.getInstance().getReference();
 
+        Intent intent = getIntent();
+        myID = intent.getStringExtra("statId");
+        userID = intent.getStringExtra("userID");
+        lat = intent.getDoubleExtra("lat", 0.0d);
+        lng = intent.getDoubleExtra("lng", 0.0d);
         recyclerConstructor();
+
+        readStatData();
+        readUserData();
+
+        mStatFavorite.setOnClickListener(this);
+        callBtn.setOnClickListener(this);
 
     }
 
@@ -80,16 +117,17 @@ public class StatementInfoActivity extends AppCompatActivity{
 
     public void recyclerConstructor(){
 
-        mDataref.addValueEventListener(new ValueEventListener() {
+        mDataref.child("Statement").child(myID).child("imageList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnap: dataSnapshot.child(user.getUid()).child("mImages").getChildren()) {
+                for(DataSnapshot postSnap: dataSnapshot.getChildren()) {
                     String images = postSnap.getValue(String.class);
                     mImages.add(images);
                 }
-                imageAdapter = new StatementImageAdapter(StatementInfoActivity.this, mImages);
+                imageAdapter = new StatementImageAdapter(StatementInfoActivity.this, mImages, myID);
                 mRecycler.setAdapter(imageAdapter);
 
+                toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
                 toolbar.setTitle("" + mImages.size() + " Photo");
             }
 
@@ -97,11 +135,91 @@ public class StatementInfoActivity extends AppCompatActivity{
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
+    }
 
+    public void readStatData() {
 
+        mDataref.child("Statement").child(myID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Statement stat = dataSnapshot.getValue(Statement.class);
+
+                mStatPrice.setText(stat.getPrice());
+                mStatAddress.setText(stat.getAddress());
+                mStatCategory.setText(stat.getCategory());
+                mStatType.setText(stat.getType());
+                mStatDesc.setText(stat.getDesc());
+                mStatFloor.setText(stat.getFloor());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void readUserData(){
+        mDataref.child("User").child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                UserInform userinfo = dataSnapshot.getValue(UserInform.class);
+
+                mStatName.setText(userinfo.getmUserName() + " " + userinfo.getmUserSurname());
+                mStatEmail.setText(userinfo.getmUserEmail());
+                mStatphone.setText(userinfo.getmUserPhoneNumber());
+                Glide.with(StatementInfoActivity.this)
+                        .load(userinfo.getmImageUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .placeholder(R.drawable.avatar_icon)
+                        .fitCenter()
+                        .into(mStatUserImage);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
 
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.isMyLocationEnabled();
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Yerevan"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13f));
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case (R.id.stat_favorite):
+                createFavorite();
+                break;
+        }
+        switch (v.getId()) {
+            case (R.id.call_btn):
+                callUser();
+                break;
+        }
+
+    }
+
+    private void callUser() {
+    }
+
+    private void createFavorite() {
+
+
+    }
 }

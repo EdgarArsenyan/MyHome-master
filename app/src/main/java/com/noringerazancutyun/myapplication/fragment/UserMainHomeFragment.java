@@ -83,6 +83,7 @@ public class UserMainHomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         readFromDB();
 
 
@@ -149,7 +150,6 @@ public class UserMainHomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserInform.class);
-                Log.d(TAG, "User name: " + user.getmUserName() + ", email " + user.getmUserEmail());
                 String nameSurname = (user.getmUserName() + "  " + user.getmUserSurname());
                 mUserName.setText(nameSurname);
                 userSetImage();

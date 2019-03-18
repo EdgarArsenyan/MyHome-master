@@ -1,10 +1,14 @@
 package com.noringerazancutyun.myapplication.models;
 
+import java.util.ArrayList;
+
 public class UserInform {
 
     private String mUserName, mUserEmail, mUserSurname, mUserPhoneNumber;
 
     private String userId;
+
+//    private ArrayList<String> stateId = new ArrayList<>();
 
     private String mImageUrl;
 
@@ -21,6 +25,15 @@ public class UserInform {
     public UserInform(){
 
     }
+
+
+//    public ArrayList<String> getStateId() {
+//        return stateId;
+//    }
+//
+//    public void setStateId(ArrayList<String> stateId) {
+//        this.stateId = stateId;
+//    }
 
     public UserInform(String mImageUrl) {
         this.mImageUrl = mImageUrl;

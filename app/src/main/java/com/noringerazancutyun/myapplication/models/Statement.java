@@ -14,6 +14,9 @@ public class Statement {
     private String desc;
     private String mImages;
     private double lat, lng;
+    private String userId;
+    private String statID;
+
     private ArrayList<String> imageList;
 
     public Statement() {
@@ -31,7 +34,7 @@ public class Statement {
         this.mImages = mImages;
     }
 
-    public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc,double lat, double lng, ArrayList<String> imageList) {
+    public Statement(String category, String type, String price, String rooms, String floor, String district, String address, String desc, double lat, double lng, ArrayList<String> imageList, String userId, String statID) {
         this.category = category;
         this.type = type;
         this.price = price;
@@ -43,6 +46,24 @@ public class Statement {
         this.lat = lat;
         this.lng = lng;
         this.imageList = imageList;
+        this.userId = userId;
+        this.statID = statID;
+    }
+
+    public String getStatID() {
+        return statID;
+    }
+
+    public void setStatID(String statID) {
+        this.statID = statID;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public ArrayList<String> getImageList() {

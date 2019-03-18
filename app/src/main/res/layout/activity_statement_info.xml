@@ -7,37 +7,32 @@
     tools:context=".activity.StatementInfoActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        >
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
             app:contentScrim="@color/colorPrimaryDark"
-            >
+            app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/stat_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/colapse"
-/>
+                android:background="@drawable/colapse" />
 
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-                />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
 
 
     </android.support.design.widget.AppBarLayout>
@@ -46,18 +41,16 @@
         android:id="@+id/stat_favorite"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:src="@drawable/like"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|right|end"
         android:layout_marginEnd="32dp"
         android:elevation="@dimen/fab_margin"
-        />
+        android:src="@drawable/like"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|right|end" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -70,12 +63,12 @@
 
                 >
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+
                     android:id="@+id/stat_user_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="8dp"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/avatar_icon" />
 
                 <LinearLayout
@@ -115,50 +108,66 @@
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:paddingTop="6dp"
-                        android:textColor="@color/colorPrimary"
                         android:text="Edgar Arsenyan"
-                        android:textSize="18sp"/>
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/stat_user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:paddingTop="6dp"
-                        android:textColor="@color/colorPrimary"
                         android:text="edgararsenyan@gmail.com"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/stat_user_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:paddingTop="6dp"
                         android:textColor="@color/colorPrimary"
-                        android:text="(374)96-448-555"
-                        android:textSize="18sp"/>
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/stat_user_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:paddingTop="6dp"
+                            android:text="(374)96-448-555"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/call_btn"
+                            android:layout_width="76dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/call" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="120dp"
-                android:background="@color/colorPrimaryDark"/>
+                android:background="@color/colorPrimaryDark" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="122dp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="16dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -174,10 +183,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="10"
-                        android:textSize="24sp"
-                        android:textStyle="italic|bold"
+                        android:text="50000"
                         android:textColor="@color/colorPrimary"
-                        android:text="50000" />
+                        android:textSize="24sp"
+                        android:textStyle="italic|bold" />
 
                     <ImageView
                         android:id="@+id/imageView11"
@@ -192,16 +201,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="0.5"
+                        android:text="3"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="24sp"
-                        android:text="3" />
+                        android:textSize="24sp" />
 
                     <ImageView
                         android:id="@+id/imageView12"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
                         app:srcCompat="@drawable/floors" />
 
                     <TextView
@@ -210,9 +219,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="0.5"
+                        android:text="12"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="24sp"
-                        android:text="12" />
+                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <View
@@ -220,13 +229,13 @@
                     android:layout_height="2dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="0dp"
-                    android:background="@color/colorPrimaryDark"/>
+                    android:background="@color/colorPrimaryDark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="@dimen/fab_margin"
                     android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:layout_marginVertical="@dimen/fab_margin"
                     android:orientation="horizontal">
 
                     <TextView
@@ -257,9 +266,9 @@
                         android:layout_width="167dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/appbar_padding_top"
+                        android:text="APPARTEMENT"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        android:text="APPARTEMENT" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -267,13 +276,13 @@
                     android:layout_height="2dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="0dp"
-                    android:background="@color/colorPrimaryDark"/>
+                    android:background="@color/colorPrimaryDark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="@dimen/fab_margin"
                     android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:layout_marginVertical="@dimen/fab_margin"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -289,9 +298,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/appbar_padding_top"
                         android:layout_weight="1"
-                        android:textSize="18sp"
+                        android:text="Malatya-Sebastya, Zoravar Andraniki 24"
                         android:textColor="@color/colorPrimary"
-                        android:text="Malatya-Sebastya, Zoravar Andraniki 24" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -299,13 +308,13 @@
                     android:layout_height="2dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="0dp"
-                    android:background="@color/colorPrimaryDark"/>
+                    android:background="@color/colorPrimaryDark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/fab_margin"
                     android:layout_marginHorizontal="@dimen/appbar_padding_top"
+                    android:layout_marginVertical="@dimen/fab_margin"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -319,11 +328,11 @@
                         android:id="@+id/stat_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
                         android:layout_marginStart="@dimen/appbar_padding_top"
                         android:layout_weight="1"
-                        android:text="@string/example" />
+                        android:text="@string/example"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -331,19 +340,15 @@
         </RelativeLayout>
 
 
-
     </android.support.v4.widget.NestedScrollView>
-
-
 
 
     <FrameLayout
 
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        tools:context=".fragment.MapFragment"
-        >
+        android:layout_gravity="bottom"
+        tools:context=".fragment.MapFragment">
 
         <fragment
 
@@ -354,7 +359,6 @@
             tools:context=".fragment.MapFragment"></fragment>
 
     </FrameLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

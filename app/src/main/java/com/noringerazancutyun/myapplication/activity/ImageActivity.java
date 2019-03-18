@@ -1,5 +1,6 @@
 package com.noringerazancutyun.myapplication.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class ImageActivity extends AppCompatActivity {
     StatementImageAdapter imageAdapter;
     private DatabaseReference mDataref;
     private List<String> mImages;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class ImageActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        Intent intent = getIntent();
+        id = intent.getStringExtra("ID");
 
         mRecycler = findViewById(R.id.image_recycler);
         mRecycler.setHasFixedSize(true);
@@ -52,14 +56,14 @@ public class ImageActivity extends AppCompatActivity {
 
     public void recyclerConstructor(){
 
-        mDataref.addValueEventListener(new ValueEventListener() {
+        mDataref.child(id).child("imageList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnap: dataSnapshot.child(user.getUid()).child("mImages").getChildren()) {
+                for(DataSnapshot postSnap: dataSnapshot.getChildren()) {
                     String images = postSnap.getValue(String.class);
                     mImages.add(images);
                 }
-                imageAdapter = new StatementImageAdapter(ImageActivity.this, mImages);
+                imageAdapter = new StatementImageAdapter(ImageActivity.this, mImages, id);
                 mRecycler.setAdapter(imageAdapter);
 
             }

@@ -43,7 +43,9 @@ import com.noringerazancutyun.myapplication.util.GeocodingLocation;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -59,6 +61,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private double lat, lng;
     SupportMapFragment mapFragment;
     private GoogleMap mMap;
+    Statement stat;
+    Map<Marker, Statement > map = new HashMap<>();
+
 
 
 
@@ -77,7 +82,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mDataBaseReference = FirebaseDatabase.getInstance().getReference("Statement");
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        readStatementInfoFromDB();
+
+
         if (mapFragment == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -85,6 +91,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             ft.replace(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
+
+        readStatementInfoFromDB();
+
         return view;
     }
     @Override
@@ -96,8 +105,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-
+                Statement s = map.get(marker);
                 Intent intent = new Intent(getContext(), StatementInfoActivity.class);
+                intent.putExtra("statId", s.getStatID());
+                intent.putExtra("lat", s.getLat());
+                intent.putExtra("lng", s.getLng());
+                intent.putExtra("userID", s.getUserId());
                 startActivity(intent);
                 return false;
             }
@@ -112,13 +125,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot myData: dataSnapshot.getChildren()) {
 
-                     lat = myData.child("lat").getValue(Double.class);
+                    Statement stat = myData.getValue(Statement.class);
+
+                    lat = myData.child("lat").getValue(Double.class);
                      lng = myData.child("lng").getValue(Double.class);
+                     String price = myData.child("price").getValue(String.class);
                     Log.d(TAG, "onDataChange: " + "" + lat + lng);
 
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Yerevan"));
+                   Marker marker =  mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(price));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13f));
-
+                    map.put(marker, stat);
                 }
 
             }

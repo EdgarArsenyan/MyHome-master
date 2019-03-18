@@ -2,7 +2,6 @@ package com.noringerazancutyun.myapplication.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,16 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.ImageActivity;
-import com.noringerazancutyun.myapplication.activity.StatementInfoActivity;
-import com.noringerazancutyun.myapplication.models.Images;
-import com.noringerazancutyun.myapplication.models.Statement;
-import com.noringerazancutyun.myapplication.models.UserInform;
-
 
 import java.util.List;
 
@@ -27,11 +20,13 @@ public class StatementImageAdapter extends RecyclerView.Adapter<StatementImageAd
 
     private Context context;
     private List<String> mImage;
+    private String myId;
 
-    public StatementImageAdapter(Context context, List<String> mImage){
+    public StatementImageAdapter(Context context, List<String> mImage, String myId){
 
         this.context = context;
         this.mImage = mImage;
+        this.myId = myId;
 
     }
 
@@ -56,7 +51,9 @@ public class StatementImageAdapter extends RecyclerView.Adapter<StatementImageAd
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ImageActivity.class);
+                intent.putExtra("ID", myId);
                 context.startActivity(intent);
+
             }
         });
     }
