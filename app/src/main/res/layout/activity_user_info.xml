@@ -31,6 +31,33 @@
         >
 
         <EditText
+            android:id="@+id/email_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="8dp"
+            android:hint="@string/enter_your_email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/appbar_padding_top"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/texthint"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/password_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="8dp"
+            android:hint="@string/enter_your_password"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/appbar_padding_top"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/texthint"
+            android:textSize="18sp" />
+
+
+        <EditText
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,10 +99,10 @@
             android:layout_marginHorizontal="2dp"
             android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:background="@drawable/create_button" />
+            android:background="@drawable/create_button"
+            android:layout_alignParentBottom="true"/>
 
 
     </LinearLayout>
-
 
 </RelativeLayout>

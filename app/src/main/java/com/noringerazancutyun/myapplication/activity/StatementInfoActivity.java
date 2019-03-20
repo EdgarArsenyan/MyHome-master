@@ -1,8 +1,12 @@
 package com.noringerazancutyun.myapplication.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
+import com.noringerazancutyun.myapplication.fragment.FavoritListFragment;
 import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.models.UserInform;
 
@@ -60,6 +66,10 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
     private String userID;
     private double lat, lng;
     private Toolbar toolbar;
+
+    private String telNum;
+
+    private List<Statement> listStatement;
 
 
 
@@ -216,10 +226,32 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void callUser() {
+
+            Intent intentCall=new Intent(Intent.ACTION_CALL);
+            telNum=mStatphone.getText().toString();
+            if(telNum.trim().isEmpty()){
+                intentCall.setData(Uri.parse("tel:567788"));
+                Toast.makeText(getApplicationContext(),"Please Enter Num",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                intentCall.setData(Uri.parse("tel:" + "+"+telNum));
+            }
+            if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getApplicationContext(),"Please grant permission",Toast.LENGTH_SHORT).show();
+                requestPermission();
+            }else {
+                startActivity(intentCall);
+            }
+
+
     }
 
-    private void createFavorite() {
+    private  void requestPermission(){
+        ActivityCompat.requestPermissions(StatementInfoActivity.this,new String[]{Manifest.permission.CALL_PHONE},1);
+    }
 
+
+    private void createFavorite() {
 
     }
 }

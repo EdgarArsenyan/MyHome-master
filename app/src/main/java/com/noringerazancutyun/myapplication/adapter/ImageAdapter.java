@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.noringerazancutyun.myapplication.R;
-import com.noringerazancutyun.myapplication.models.Images;
 
 import java.util.List;
 

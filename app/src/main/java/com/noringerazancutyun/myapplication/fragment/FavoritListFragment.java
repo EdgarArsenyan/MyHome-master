@@ -1,5 +1,6 @@
 package com.noringerazancutyun.myapplication.fragment;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,16 +47,5 @@ public class FavoritListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        listStatement = new ArrayList<>();
-//        listStatement.add(new Statement("90000", "Davitashen", "3", "8"));
-//        listStatement.add(new Statement("75000", "Avan", "2", "3" ));
-//        listStatement.add(new Statement("150000", "Kentron", "4", "2"));
-//        listStatement.add(new Statement("90000", "Davitashen", "3", "3" ));
-//        listStatement.add(new Statement("90000", "Davitashen", "3", "8"));
-//        listStatement.add(new Statement("75000", "Avan", "2", "3" ));
-//        listStatement.add(new Statement("150000", "Kentron", "4", "2"));
-//        listStatement.add(new Statement("90000", "Davitashen", "3", "3" ));
-
     }
 }

@@ -16,7 +16,6 @@ public class Statement {
     private double lat, lng;
     private String userId;
     private String statID;
-
     private ArrayList<String> imageList;
 
     public Statement() {

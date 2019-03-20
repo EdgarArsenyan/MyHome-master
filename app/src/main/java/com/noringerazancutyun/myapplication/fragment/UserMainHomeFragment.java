@@ -51,6 +51,7 @@ public class UserMainHomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     CircleImageView  mUserProfileImage;
+    String nameSurname;
 
 
     public UserMainHomeFragment() {
@@ -85,7 +86,6 @@ public class UserMainHomeFragment extends Fragment {
         });
 
         readFromDB();
-
 
         clickLogoutAction();
         clickProfileAction();
@@ -146,11 +146,13 @@ public class UserMainHomeFragment extends Fragment {
     }
 
     private void readFromDB() {
+
+        if(mDataBaseReference != null)
         mDataBaseReference.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserInform.class);
-                String nameSurname = (user.getmUserName() + "  " + user.getmUserSurname());
+                nameSurname = (user.getmUserName() + "  " + user.getmUserSurname());
                 mUserName.setText(nameSurname);
                 userSetImage();
             }
@@ -160,6 +162,7 @@ public class UserMainHomeFragment extends Fragment {
 
             }
         });
+        else nameSurname = firebaseUser.getEmail();
     }
 
     private void userSetImage() {

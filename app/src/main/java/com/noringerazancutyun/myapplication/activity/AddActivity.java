@@ -87,24 +87,6 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         mDataBaseReference = FirebaseDatabase.getInstance().getReference();
         mProgressDialog = new ProgressDialog(AddActivity.this);
 
-
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestPermissions(new String[]{
-//                        Manifest.permission.ACCESS_FINE_LOCATION,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION,
-//                        Manifest.permission.INTERNET
-//                },10);
-//            }
-//            return;
-//        }
-//
-//        @Override
-//        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//        manager.requestLocationUpdates("gps", 5000, 0, listener);
-
         saveStatementBtn.setOnClickListener(this);
         uploadImageBtn.setOnClickListener(this);
         imageStatementBtn.setOnClickListener(this);

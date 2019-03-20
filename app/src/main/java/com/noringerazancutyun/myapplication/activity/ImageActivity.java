@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,9 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
-import com.noringerazancutyun.myapplication.adapter.ImageAdapter;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
-import com.noringerazancutyun.myapplication.models.Images;
 
 import java.util.ArrayList;
 import java.util.List;

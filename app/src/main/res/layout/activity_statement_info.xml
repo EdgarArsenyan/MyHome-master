@@ -22,7 +22,7 @@
                 android:id="@+id/stat_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/colapse" />
+ />
 
 
             <android.support.v7.widget.Toolbar
@@ -54,12 +54,15 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/t"
 
                 >
 
@@ -141,6 +144,7 @@
                             android:layout_height="24dp"
                             android:layout_marginStart="22dp"
                             android:layout_marginTop="4dp"
+                            android:elevation="@dimen/appbar_padding_top"
                             android:background="@drawable/call" />
 
                     </LinearLayout>

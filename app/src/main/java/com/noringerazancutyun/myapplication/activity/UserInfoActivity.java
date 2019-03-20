@@ -17,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +28,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.models.UserInform;
+import com.noringerazancutyun.myapplication.util.MyFirebase;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,11 +58,18 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private static final int GALLERY_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
     private static final int CAMERA_PERMISSION_CODE = 10;
+    private static final String TAG = "UserInfoActivity";
 
-    private EditText mName, mSurname, mPhone;
+
+    private EditText mEmail, mPassword, mName, mSurname, mPhone;
     private ImageView mSaveButton, mUserImage;
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
+    private UserInform user = new UserInform();
+
+    private String email, password;
+
+    MyFirebase firebase = new MyFirebase();
     private DatabaseReference mDataBaseReference;
     private StorageReference mReference;
     private String userID;
@@ -72,7 +84,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_user_info);
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        firebaseUser = mAuth.getCurrentUser();
+        mEmail = findViewById(R.id.email_text);
+        mPassword = findViewById(R.id.password_text);
         mName = findViewById(R.id.user_name);
         mSurname = findViewById(R.id.user_surname);
         mPhone = findViewById(R.id.user_phone);
@@ -85,9 +99,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
         mDataBaseReference = FirebaseDatabase.getInstance().getReference("User");
         mReference = FirebaseStorage.getInstance().getReference();
-        userID = user.getUid();
+//        userID = firebaseUser.getUid();
 
         mSaveButton.setOnClickListener(this);
+
+
 
 
     }
@@ -115,13 +131,12 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void writeToDataBase() {
 
-        String name = mName.getText().toString().trim();
+        String name = mName.getText().toString();
         String surname = mSurname.getText().toString();
         String phone = mPhone.getText().toString();
-        String email = user.getEmail();
+        String email = mEmail.getText().toString();
         String image;
         image = "no photo";
-        statId.add("no Stat");
         userInfo = new UserInform(name, email, surname, phone, image);
         mDataBaseReference.child(userInfo.getUserId()).setValue(userInfo);
     }
@@ -132,7 +147,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
 
             case (R.id.create_img_register_activity):
-                writeToDataBase();
+                createAccount(email, password);
                 Toast.makeText(UserInfoActivity.this, "User createrd", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(UserInfoActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -214,7 +229,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     myPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            mDataBaseReference.child(user.getUid()).child("mImageUrl").setValue(uri.toString());
+                            mDataBaseReference.child(firebaseUser.getUid()).child("mImageUrl").setValue(uri.toString());
 
                         }
                     });
@@ -223,6 +238,79 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
         }
 
+    }
+
+    private void createAccount(String email, String password) {
+        this.email = email;
+        this.password = password;
+        Log.d(TAG, "createAccount:" + email);
+        if (!validateForm()) {
+            return;
+        }
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            user.setUserId(String.valueOf(System.currentTimeMillis()));
+                            Log.d(TAG, "createUserWithEmail:success");
+
+                            writeToDataBase();
+//                            Intent intent = new Intent (UserInfoActivity.this, HomeActivity.class);
+//                            startActivity(intent);
+                        } else {
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(UserInfoActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+         email = mEmail.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Required.");
+            valid = false;
+        } else {
+            mEmail.setError(null);
+        }
+
+        password = mPassword.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPassword.setError("Required.");
+            valid = false;
+        } else {
+            mPassword.setError(null);
+        }
+
+        String name = mName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            mName.setError("Required.");
+            valid = false;
+        } else {
+            mName.setError(null);
+        }
+
+        String surname = mSurname.getText().toString();
+        if (TextUtils.isEmpty(surname)) {
+            mSurname.setError("Required.");
+            valid = false;
+        } else {
+            mSurname.setError(null);
+        }
+
+        String number = mPhone.getText().toString();
+        if (TextUtils.isEmpty(number)) {
+            mPhone.setError("Required.");
+            valid = false;
+        } else {
+            mPhone.setError(null);
+        }
+
+        return valid;
     }
 
 

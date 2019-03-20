@@ -55,29 +55,29 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-        firebase.mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            user.setUserId(String.valueOf(System.currentTimeMillis()));
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = firebase.mAuth.getCurrentUser();
-                            Intent intent = new Intent (EmailPasswordActivity.this, UserInfoActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
+//    private void createAccount(String email, String password) {
+//        Log.d(TAG, "createAccount:" + email);
+//        if (!validateForm()) {
+//            return;
+//        }
+//        firebase.mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            user.setUserId(String.valueOf(System.currentTimeMillis()));
+//                            Log.d(TAG, "createUserWithEmail:success");
+//                            FirebaseUser user = firebase.mAuth.getCurrentUser();
+//                            Intent intent = new Intent (EmailPasswordActivity.this, UserInfoActivity.class);
+//                            startActivity(intent);
+//                        } else {
+//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
@@ -134,7 +134,10 @@ public class EmailPasswordActivity extends BaseActivity implements
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.create_img_email_activity) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+//            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            Intent intent = new Intent(EmailPasswordActivity.this, UserInfoActivity.class);
+            startActivity(intent);
+
         } else if (i == R.id.login_img_email_activity) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
