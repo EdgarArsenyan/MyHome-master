@@ -1,7 +1,5 @@
 package com.noringerazancutyun.myapplication.fragment;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,23 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
-import com.bumptech.glide.Glide;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.FavoriteAdapter;
-import com.noringerazancutyun.myapplication.models.Statement;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
+import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
+import com.noringerazancutyun.myapplication.util.Single;
 
 public class FavoritListFragment extends Fragment {
 
     View v;
     private RecyclerView recyclerView;
-    private List<Statement> listStatement;
+    private DatabaseHelper databaseHelper;
 
 
     public FavoritListFragment() {
@@ -37,15 +29,27 @@ public class FavoritListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.favoritelist_activity, container, false);
-        recyclerView = v.findViewById(R.id.favorit_recycler);
-        FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getContext(), listStatement);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(favoriteAdapter);
+//        FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getContext(), favStatement);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        recyclerView.setAdapter(favoriteAdapter);
+//
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+//        databaseHelper = Single.getInstance().getDatabaseInstance();
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FavoriteAdapter Adapter = new FavoriteAdapter(getContext(), databaseHelper.getDataDao().getAllData());
+        recyclerView.setAdapter(Adapter);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recyclerView = v.findViewById(R.id.favorit_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+        databaseHelper = Single.instance.db;
     }
 }

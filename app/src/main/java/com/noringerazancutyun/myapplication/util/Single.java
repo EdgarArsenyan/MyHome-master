@@ -5,18 +5,16 @@ import android.arch.persistence.room.Room;
 
 import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
 
-/**
- * Created by gleb on 11/16/17.
- */
 
-public class App extends Application {
 
-    private static App instance;
-    private DatabaseHelper db;
+public class Single extends Application {
 
-    public static App getInstance() {
-        return instance;
-    }
+    public static Single instance;
+    public DatabaseHelper db;
+
+//    public static Single getInstance() {
+//        return instance;
+//    }
 
     @Override
     public void onCreate() {
@@ -27,7 +25,7 @@ public class App extends Application {
                 .build();
     }
 
-    public DatabaseHelper getDatabaseInstance() {
-        return db;
-    }
+//    public DatabaseHelper getDatabaseInstance() {
+//        return db;
+//    }
 }

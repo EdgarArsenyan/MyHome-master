@@ -10,11 +10,13 @@ public class StatData {
 
     @NonNull
     @PrimaryKey()
-    String id;
+    private String id;
     private String price;
     private String address;
     private String room;
     private String floor;
+
+
 
     @NonNull
     public String getId() {

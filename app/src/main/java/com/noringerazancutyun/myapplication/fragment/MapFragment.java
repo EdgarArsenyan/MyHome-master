@@ -16,6 +16,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -106,6 +108,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void readStatementInfoFromDB() {
+
+        final BitmapDescriptor rent_icon= BitmapDescriptorFactory.fromResource(R.drawable.rent);
+        final BitmapDescriptor sale_icon= BitmapDescriptorFactory.fromResource(R.drawable.sale);
         mDataBaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -118,7 +123,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                      String price = myData.child("price").getValue(String.class);
                     Log.d(TAG, "onDataChange: " + "" + lat + lng);
 
+
                    Marker marker =  mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(price));
+                    if (stat.getCategory().equals("RENT")){
+                        marker.setIcon(rent_icon);
+                    }else{
+                        marker.setIcon(sale_icon);
+                    }
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 11f));
                     map.put(marker, stat);
                 }

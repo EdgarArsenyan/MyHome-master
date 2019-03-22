@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.UserInfoActivity"
-    android:background="@color/colorAccent">
+>
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/colapse"/>
 
     <ImageView
         android:id="@+id/user_image"
@@ -14,7 +19,7 @@
         android:layout_height="150dp"
         android:layout_marginHorizontal="130dp"
         android:layout_marginTop="60dp"
-        app:srcCompat="@drawable/user" />
+        app:srcCompat="@drawable/add_user_image" />
 
 
 
@@ -24,37 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="@dimen/fab_max_margin"
+        android:layout_marginHorizontal="@dimen/fab_margin"
         android:layout_marginBottom="130dp"
         android:orientation="vertical"
 
         >
-
-        <EditText
-            android:id="@+id/email_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="8dp"
-            android:hint="@string/enter_your_email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="@dimen/appbar_padding_top"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/texthint"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/password_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="8dp"
-            android:hint="@string/enter_your_password"
-            android:inputType="textPassword"
-            android:paddingStart="@dimen/appbar_padding_top"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/texthint"
-            android:textSize="18sp" />
 
 
         <EditText
@@ -64,9 +43,15 @@
             android:ems="10"
             android:hint="@string/name"
             android:inputType="textEmailAddress"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/texthint"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
             android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/user_surname"
@@ -75,10 +60,15 @@
             android:ems="10"
             android:hint="Surname"
             android:inputType="textEmailAddress"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/texthint"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
             android:textSize="18sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"/>
 
         <com.vicmikhailau.maskededittext.MaskedEditText
             android:id="@+id/user_phone"
@@ -86,23 +76,43 @@
             android:layout_height="wrap_content"
             android:hint="@string/edt_masked_custom_mobile_hint"
             android:inputType="phone"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/texthint"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
             app:mask="(###)##-###-###" />
 
 
-        <ImageView
-            android:id="@+id/create_img_register_activity"
-            android:layout_width="@dimen/button_wigth"
-            android:layout_height="@dimen/button_heigth"
-            android:layout_gravity="end"
-            android:layout_marginHorizontal="2dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/create_button"
-            android:layout_alignParentBottom="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"/>
+
+
+
 
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/create_img_register_activity"
+        android:layout_width="@dimen/button_wigth"
+        android:layout_height="@dimen/button_heigth"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="2dp"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/save"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
+
+
+
+
+
+
+
+
+"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

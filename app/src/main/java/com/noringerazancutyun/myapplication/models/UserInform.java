@@ -14,9 +14,8 @@ public class UserInform {
 
 
 
-    public UserInform(String mUserName, String mUserEmail, String mUserSurname, String mUserPhoneNumber, String mImageUrl) {
+    public UserInform(String mUserName,  String mUserSurname, String mUserPhoneNumber, String mImageUrl) {
         this.mUserName = mUserName;
-        this.mUserEmail = mUserEmail;
         this.mUserSurname = mUserSurname;
         this.mUserPhoneNumber = mUserPhoneNumber;
         this.mImageUrl = mImageUrl;

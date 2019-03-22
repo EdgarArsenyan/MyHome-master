@@ -214,7 +214,6 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         userId = user.getUid();
         userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId );
         mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
-//        mDataBaseReference.child("User").child(user.getUid()).child("statId").setValue(statList);
     }
 
 

@@ -33,9 +33,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
-import com.noringerazancutyun.myapplication.fragment.FavoritListFragment;
 import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.models.UserInform;
+import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
+import com.noringerazancutyun.myapplication.roomDB.StatData;
+import com.noringerazancutyun.myapplication.util.Single;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,13 +231,8 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
             Intent intentCall=new Intent(Intent.ACTION_CALL);
             telNum=mStatphone.getText().toString();
-            if(telNum.trim().isEmpty()){
-                intentCall.setData(Uri.parse("tel:567788"));
-                Toast.makeText(getApplicationContext(),"Please Enter Num",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                intentCall.setData(Uri.parse("tel:" + "+"+telNum));
-            }
+            intentCall.setData(Uri.parse("tel:" + "+"+telNum));
+
             if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(getApplicationContext(),"Please grant permission",Toast.LENGTH_SHORT).show();
                 requestPermission();
@@ -253,5 +250,16 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
     private void createFavorite() {
 
+        DatabaseHelper databaseHelper = Single.instance.db;
+
+        StatData model = new StatData();
+        model.setPrice(mStatPrice.getText().toString());
+        model.setAddress(mStatAddress.getText().toString());
+        model.setRoom(mStatRooms.getText().toString());
+        model.setFloor(mStatFloor.getText().toString());
+        model.setId(myID);
+        databaseHelper.getDataDao().insert(model);
+
+        finish();
     }
 }

@@ -27,8 +27,8 @@ public interface DataDao {
     @Update
     void update(StatData dataModel);
 
-    @Query("select * from StatData")
-    LiveData<List<StatData>> findAll();
+    @Query("SELECT * FROM StatData")
+    List<StatData> findAll();
 
 //    @Query("SELECT * FROM DataModel WHERE title LIKE :title")
 //    List<DataModel> getAllInfo();

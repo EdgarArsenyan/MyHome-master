@@ -65,16 +65,13 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private ImageView mSaveButton, mUserImage;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-    private UserInform user = new UserInform();
 
-    private String email, password;
 
-    MyFirebase firebase = new MyFirebase();
+
     private DatabaseReference mDataBaseReference;
     private StorageReference mReference;
-    private String userID;
-    private ArrayList<String> statId = new ArrayList<>();
-     UserInform userInfo;
+    private String userImage;
+    UserInform userInfo;
      private  Uri imageUri;
 
 
@@ -134,11 +131,14 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         String name = mName.getText().toString();
         String surname = mSurname.getText().toString();
         String phone = mPhone.getText().toString();
-        String email = mEmail.getText().toString();
         String image;
+        if (userImage==null){
         image = "no photo";
-        userInfo = new UserInform(name, email, surname, phone, image);
-        mDataBaseReference.child(userInfo.getUserId()).setValue(userInfo);
+        }else{
+            image = userImage;
+        }
+        userInfo = new UserInform(name, surname, phone, image);
+        mDataBaseReference.child(firebaseUser.getUid()).setValue(userInfo);
     }
 
     @Override
@@ -147,10 +147,14 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
 
             case (R.id.create_img_register_activity):
-                createAccount(email, password);
+
+                if (validateForm()){
+//                createAccount(email, password);
                 Toast.makeText(UserInfoActivity.this, "User createrd", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(UserInfoActivity.this, HomeActivity.class);
-                startActivity(intent);
+                writeToDataBase();
+                startActivity(intent);}
+
                 break;
 
         }
@@ -229,7 +233,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     myPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            mDataBaseReference.child(firebaseUser.getUid()).child("mImageUrl").setValue(uri.toString());
+//                            mDataBaseReference.child(firebaseUser.getUid()).child("mImageUrl").setValue(uri.toString());
+                            userImage = uri.toString();
+
 
                         }
                     });
@@ -240,51 +246,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void createAccount(String email, String password) {
-        this.email = email;
-        this.password = password;
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            user.setUserId(String.valueOf(System.currentTimeMillis()));
-                            Log.d(TAG, "createUserWithEmail:success");
-
-                            writeToDataBase();
-//                            Intent intent = new Intent (UserInfoActivity.this, HomeActivity.class);
-//                            startActivity(intent);
-                        } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(UserInfoActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
 
     private boolean validateForm() {
         boolean valid = true;
 
-         email = mEmail.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmail.setError("Required.");
-            valid = false;
-        } else {
-            mEmail.setError(null);
-        }
 
-        password = mPassword.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPassword.setError("Required.");
-            valid = false;
-        } else {
-            mPassword.setError(null);
-        }
 
         String name = mName.getText().toString();
         if (TextUtils.isEmpty(name)) {
