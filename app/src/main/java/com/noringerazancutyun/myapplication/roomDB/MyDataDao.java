@@ -13,21 +13,21 @@ import java.util.List;
  */
 
 @Dao
-public interface DataDao {
+public interface MyDataDao {
     @Insert
-    void insert(StatData dataModel);
+    void insert(MyStatData dataModel);
 
     @Delete
-    void delete(StatData dataModel);
+    void delete(MyStatData dataModel);
 
-    @Query("SELECT * FROM StatData")
-    List<StatData> getAllData();
+    @Query("SELECT * FROM MyStatData")
+    List<MyStatData> getAllData();
 
     @Update
-    void update(StatData dataModel);
+    void update(MyStatData dataModel);
 
-    @Query("SELECT * FROM StatData")
-    List<StatData> findAll();
+    @Query("SELECT * FROM MyStatData")
+    List<MyStatData> findAll();
 
 //    @Query("SELECT * FROM DataModel WHERE title LIKE :title")
 //    List<DataModel> getAllInfo();

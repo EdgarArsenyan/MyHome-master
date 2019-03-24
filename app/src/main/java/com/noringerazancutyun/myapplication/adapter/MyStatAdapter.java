@@ -1,6 +1,5 @@
 package com.noringerazancutyun.myapplication.adapter;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,55 +8,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.noringerazancutyun.myapplication.R;
-import com.noringerazancutyun.myapplication.activity.StatementInfoActivity;
-import com.noringerazancutyun.myapplication.fragment.FavoritListFragment;
-import com.noringerazancutyun.myapplication.models.Statement;
+import com.noringerazancutyun.myapplication.activity.MyStat;
 import com.noringerazancutyun.myapplication.roomDB.MyStatData;
-import com.noringerazancutyun.myapplication.roomDB.StatData;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavViewHolder> {
+public class MyStatAdapter extends RecyclerView.Adapter<MyStatAdapter.MyStatViewHolder> {
 
     private Context context;
     private OnDeleteListener onDeleteListener;
-    private List<StatData> data;
+    private List<MyStatData> data;
 
-
-
-    public FavoriteAdapter(Context context, List<StatData> data) {
+    public MyStatAdapter(Context context, List<MyStatData> data) {
         this.context = context;
         this.data = data;
-
     }
 
-
-
-
+    @NonNull
     @Override
-    public FavViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public MyStatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fav_rv, parent, false);
-        FavViewHolder viewHolder = new FavViewHolder(v);
+        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_stat_item, parent, false);
+        MyStatAdapter.MyStatViewHolder viewHolder = new MyStatAdapter.MyStatViewHolder(v);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull MyStatViewHolder holder, int position) {
         holder.price.setText(data.get(position).getPrice());
         holder.address.setText(data.get(position).getAddress());
         holder.rooms.setText(data.get(position).getRoom());
         holder.floor.setText(data.get(position).getFloor());
         holder.statID = data.get(position).getStatID();
-        holder.userID = data.get(position).getUserID();
         holder.imageUrl = data.get(position).getImageUrl();
 
         Glide.with(context)
@@ -71,7 +59,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
         return data.size();
     }
 
-    public  class FavViewHolder extends RecyclerView.ViewHolder {
+
+    public class MyStatViewHolder extends RecyclerView.ViewHolder {
 
         private TextView price;
         private TextView address;
@@ -80,19 +69,21 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
         private ImageView img;
         private ImageView delete;
         private String statID;
-        private String userID;
         private String imageUrl;
 
 
-        public FavViewHolder(final View itemView) {
+        public MyStatViewHolder(final View itemView) {
             super(itemView);
 
-            price = itemView.findViewById(R.id.fav_prica);
-            address = itemView.findViewById(R.id.fav_district);
-            rooms = itemView.findViewById(R.id.fav_rooms);
-            floor = itemView.findViewById(R.id.fav_floor);
-            img = itemView.findViewById(R.id.fav_img);
-            delete = itemView.findViewById(R.id.delete_fav);
+            final DatabaseReference mDataref;
+            mDataref = FirebaseDatabase.getInstance().getReference();
+            price = itemView.findViewById(R.id.my_stat_prica);
+            address = itemView.findViewById(R.id.my_stat_address);
+            rooms = itemView.findViewById(R.id.my_stat_rooms);
+            floor = itemView.findViewById(R.id.my_stat_floor);
+            img = itemView.findViewById(R.id.my_stat_img);
+            delete = itemView.findViewById(R.id.delete_my_stat);
+
 
 
             delete.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +91,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
                 public void onClick(View v) {
                     onDeleteListener.onDelete(data.get(getAdapterPosition()));
                     data.remove(getAdapterPosition());
+                    mDataref.child("Statement").child(statID).removeValue();
                     notifyItemRemoved(getAdapterPosition());
                 }
             });
@@ -108,21 +100,20 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), StatementInfoActivity.class);
+                    Intent intent = new Intent(itemView.getContext(), MyStat.class);
                     intent.putExtra("statId", statID);
-                    intent.putExtra("userID", userID);
                     context.startActivity(intent);
                 }
             });
         }
     }
 
-    public void setOnDeleteListener(OnDeleteListener onDeleteListener) {
+    public void setOnDeleteListener(MyStatAdapter.OnDeleteListener onDeleteListener) {
         this.onDeleteListener = onDeleteListener;
     }
 
     public interface OnDeleteListener {
-        void onDelete(StatData dataModel);
+        void onDelete(MyStatData dataModel);
 
     }
 }

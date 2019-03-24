@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.StatementImageAdapter;
@@ -46,17 +47,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StatementInfoActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
-    TextView mStatName, mStatEmail, mStatphone, mStatPrice, mStatRooms,
+    private TextView mStatName, mStatEmail, mStatphone, mStatPrice, mStatRooms,
     mStatFloor, mStatAddress, mStatDesc, mStatCategory, mStatType;
-    ImageView mStatFavorite, callBtn;
-    CircleImageView mStatUserImage;
+    private ImageView mStatFavorite, callBtn;
+    private CircleImageView mStatUserImage;
 
     private GoogleMap mMap;
 
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    SupportMapFragment mapFragment;
 
 
     RecyclerView mRecycler;
@@ -70,8 +70,6 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
     private Toolbar toolbar;
 
     private String telNum;
-
-
 
 
     @Override
@@ -92,9 +90,6 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
         mStatUserImage = findViewById(R.id.stat_user_image);
         callBtn = findViewById(R.id.call_btn);
         toolbar = findViewById(R.id.toolbar);
-
-//        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_statement);
-
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();

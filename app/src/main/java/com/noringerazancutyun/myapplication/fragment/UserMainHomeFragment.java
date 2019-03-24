@@ -28,6 +28,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.AddActivity;
 import com.noringerazancutyun.myapplication.activity.HomeActivity;
+import com.noringerazancutyun.myapplication.activity.MyStat;
 import com.noringerazancutyun.myapplication.activity.UserInfoActivity;
 import com.noringerazancutyun.myapplication.models.UserInform;
 import com.noringerazancutyun.myapplication.util.MyFirebase;
@@ -89,6 +90,7 @@ public class UserMainHomeFragment extends Fragment {
 
         clickLogoutAction();
         clickProfileAction();
+        clickStatementAction();
         return view;
     }
 
@@ -124,10 +126,10 @@ public class UserMainHomeFragment extends Fragment {
     }
 
     public void clickStatementAction() {
-        mHistory.setOnClickListener(new View.OnClickListener() {
+        mStatement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                Intent intent = new Intent(getContext(), MyStat.class);
                 startActivity(intent);
             }
         });

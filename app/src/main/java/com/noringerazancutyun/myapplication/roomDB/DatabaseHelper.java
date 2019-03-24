@@ -11,10 +11,11 @@ import android.arch.persistence.room.RoomDatabase;
  * Created by gleb on 11/16/17.
  */
 
-@Database(entities = { StatData.class }, version = 1, exportSchema = false)
+@Database(entities = { StatData.class, MyStatData.class }, version = 1, exportSchema = false)
 public abstract class DatabaseHelper extends RoomDatabase {
 
     public abstract DataDao getDataDao();
+    public abstract MyDataDao getMyDataDao();
 
     @Override
     protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration config) {

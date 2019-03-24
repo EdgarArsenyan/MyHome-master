@@ -30,6 +30,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.models.Statement;
+import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
+import com.noringerazancutyun.myapplication.roomDB.MyStatData;
+import com.noringerazancutyun.myapplication.roomDB.StatData;
+import com.noringerazancutyun.myapplication.util.App;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -214,6 +218,26 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         userId = user.getUid();
         userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId );
         mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+
+        createMyStat(uploadId, mAdress, mPrice, mRooms, mFloor);
+
+    }
+
+    private void createMyStat(String ID, String address, String price, String rooms, String floors) {
+
+        DatabaseHelper databaseHelper = App.getInstance().getDatabaseInstance();
+
+        MyStatData model = new MyStatData();
+        model.setStatID(ID);
+        model.setPrice(price);
+        model.setAddress(address);
+        model.setRoom(rooms);
+        model.setFloor(floors);
+        if(imageList != null) {
+            model.setImageUrl(imageList.get(0));
+        }else model.setImageUrl("no Photo");
+        databaseHelper.getMyDataDao().insert(model);
+        finish();
     }
 
 
