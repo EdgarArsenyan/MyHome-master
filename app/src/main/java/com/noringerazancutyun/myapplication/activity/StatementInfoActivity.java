@@ -37,7 +37,7 @@ import com.noringerazancutyun.myapplication.models.Statement;
 import com.noringerazancutyun.myapplication.models.UserInform;
 import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
 import com.noringerazancutyun.myapplication.roomDB.StatData;
-import com.noringerazancutyun.myapplication.util.Single;
+import com.noringerazancutyun.myapplication.util.App;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,6 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
     private String telNum;
 
-    private List<Statement> listStatement;
 
 
 
@@ -250,14 +249,16 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
     private void createFavorite() {
 
-        DatabaseHelper databaseHelper = Single.instance.db;
+        DatabaseHelper databaseHelper = App.getInstance().getDatabaseInstance();
 
         StatData model = new StatData();
+        model.setStatID(myID);
+        model.setUserID(userID);
         model.setPrice(mStatPrice.getText().toString());
         model.setAddress(mStatAddress.getText().toString());
         model.setRoom(mStatRooms.getText().toString());
         model.setFloor(mStatFloor.getText().toString());
-        model.setId(myID);
+        model.setImageUrl(mImages.get(0));
         databaseHelper.getDataDao().insert(model);
 
         finish();

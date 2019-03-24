@@ -10,21 +10,29 @@ public class StatData {
 
     @NonNull
     @PrimaryKey()
-    private String id;
+    private String statID;
+    private String userID;
     private String price;
     private String address;
     private String room;
     private String floor;
-
-
+    private  String imageUrl;
 
     @NonNull
-    public String getId() {
-        return id;
+    public String getStatID() {
+        return statID;
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
+    public void setStatID(@NonNull String statID) {
+        this.statID = statID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getPrice() {
@@ -57,5 +65,13 @@ public class StatData {
 
     public void setFloor(String floor) {
         this.floor = floor;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

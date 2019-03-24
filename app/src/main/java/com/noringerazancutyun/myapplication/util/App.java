@@ -7,25 +7,25 @@ import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
 
 
 
-public class Single extends Application {
+public class App extends Application {
 
-    public static Single instance;
-    public DatabaseHelper db;
+    public static App instance;
+    private DatabaseHelper db;
 
-//    public static Single getInstance() {
-//        return instance;
-//    }
+    public static App getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        db = Room.databaseBuilder(getApplicationContext(), DatabaseHelper.class, "data-database")
+        db = Room.databaseBuilder(this, DatabaseHelper.class, "DataBase")
                 .allowMainThreadQueries()
                 .build();
     }
 
-//    public DatabaseHelper getDatabaseInstance() {
-//        return db;
-//    }
+    public DatabaseHelper getDatabaseInstance() {
+        return db;
+    }
 }

@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.adapter.FavoriteAdapter;
 import com.noringerazancutyun.myapplication.roomDB.DatabaseHelper;
-import com.noringerazancutyun.myapplication.util.Single;
+import com.noringerazancutyun.myapplication.roomDB.StatData;
+import com.noringerazancutyun.myapplication.util.App;
 
-public class FavoritListFragment extends Fragment {
+public class FavoritListFragment extends Fragment implements FavoriteAdapter.OnDeleteListener{
 
     View v;
     private RecyclerView recyclerView;
@@ -29,12 +30,9 @@ public class FavoritListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.favoritelist_activity, container, false);
-//        FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getContext(), favStatement);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        recyclerView.setAdapter(favoriteAdapter);
-//
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-//        databaseHelper = Single.getInstance().getDatabaseInstance();
+        recyclerView = v.findViewById(R.id.favorit_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+        databaseHelper = App.getInstance().getDatabaseInstance();
         return v;
     }
 
@@ -42,14 +40,19 @@ public class FavoritListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         FavoriteAdapter Adapter = new FavoriteAdapter(getContext(), databaseHelper.getDataDao().getAllData());
+        Adapter.setOnDeleteListener(this);
         recyclerView.setAdapter(Adapter);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recyclerView = v.findViewById(R.id.favorit_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-        databaseHelper = Single.instance.db;
+
+    }
+
+
+    @Override
+    public void onDelete(StatData dataModel) {
+        databaseHelper.getDataDao().delete(dataModel);
     }
 }
