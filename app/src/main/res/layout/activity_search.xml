@@ -9,7 +9,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+
          />
 
     <View
@@ -34,7 +34,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:text="@string/search_category"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -55,24 +55,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimary"
                     android:text="RENT" />
 
                 <RadioButton
                     android:id="@+id/saleRB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimary"
                     android:layout_weight="1"
                     android:text="SALE" />
-
-                <RadioButton
-                    android:id="@+id/hotelsRB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_weight="1"
-                    android:text="HOTELS" />
 
             </RadioGroup>
 
@@ -103,7 +95,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:text="@string/search_type"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -118,15 +110,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:text="Apartments" />
 
             <CheckBox
                 android:id="@+id/check_house"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:layout_weight="1"
                 android:text="Houses" />
 
@@ -134,7 +125,7 @@
                 android:id="@+id/check_comercial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:layout_weight="1"
                 android:text="Commercial" />
         </LinearLayout>
@@ -163,7 +154,7 @@
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
             android:text="@string/price"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -242,7 +233,7 @@
             android:paddingStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/location"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <Spinner
