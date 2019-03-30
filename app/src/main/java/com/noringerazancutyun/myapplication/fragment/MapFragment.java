@@ -82,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
             public void onClick(View v) {
 
                 SearchFragment search = new SearchFragment();
+                search.setOnInputSelected(MapFragment.this);
                 search.getTargetFragment();
                 search.show(getFragmentManager(), "SearchDialog");
 

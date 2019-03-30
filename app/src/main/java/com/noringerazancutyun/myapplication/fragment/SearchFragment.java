@@ -109,13 +109,7 @@ public class SearchFragment extends DialogFragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            onInputSelected = (OnInputSelected) getTargetFragment();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
-        }
+    public void setOnInputSelected(OnInputSelected onInputSelected) {
+        this.onInputSelected = onInputSelected;
     }
 }
