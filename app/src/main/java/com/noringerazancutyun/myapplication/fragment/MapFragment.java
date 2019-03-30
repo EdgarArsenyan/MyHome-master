@@ -101,7 +101,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
         }
         mapFragment.getMapAsync(this);
 
-        readStatementInfoFromDB();
+//        readStatementInfoFromDB();
 
         return view;
     }
@@ -180,7 +180,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
                         } else {
                             marker.setIcon(sale_icon);
                         }
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 11f));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12f));
                         map.put(marker, stat);
                     }
 
@@ -200,5 +200,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
     public void sendInput(String search, String loc) {
         category = search;
         location = loc;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        readStatementInfoFromDB();
+        Log.d(TAG, "onResume: " + category  + location);
+
     }
 }

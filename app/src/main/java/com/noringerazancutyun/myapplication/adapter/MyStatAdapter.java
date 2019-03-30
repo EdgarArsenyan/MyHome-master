@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.noringerazancutyun.myapplication.R;
+import com.noringerazancutyun.myapplication.activity.AddActivity;
 import com.noringerazancutyun.myapplication.activity.MyStat;
 import com.noringerazancutyun.myapplication.roomDB.MyStatData;
 
@@ -100,7 +101,7 @@ public class MyStatAdapter extends RecyclerView.Adapter<MyStatAdapter.MyStatView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), MyStat.class);
+                    Intent intent = new Intent(itemView.getContext(), AddActivity.class);
                     intent.putExtra("statId", statID);
                     context.startActivity(intent);
                 }

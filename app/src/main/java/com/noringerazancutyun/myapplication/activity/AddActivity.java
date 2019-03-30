@@ -42,10 +42,7 @@ import java.util.List;
 public class AddActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int GALLERY_REQUEST_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
-    private static final int CAMERA_PERMISSION_CODE = 10;
-    public static final int GPS_REQUEST_CODE = 20;
-    public static final int ADDRESS_REQUEST_CODE= 30;
+
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -55,8 +52,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public ProgressDialog mProgressDialog;
 
     private EditText descText, addressText, priceText;
-    private static final int SELECT_PICTURE = 1;
-    private String imagePath;
+    private String statID;
     private ImageView imageStatementBtn, saveStatementBtn, uploadImageBtn, homeImageView;
     private String mCategory, mType, mFloor, mRooms, mDesc, mAdress, mLocation, mPrice, userId;
     private double lat, lng;
@@ -78,6 +74,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         saveStatementBtn = findViewById(R.id.save_statement_btn);
         uploadImageBtn = findViewById(R.id.upload_images);
         homeImageView = findViewById(R.id.home_img);
+        Intent intent = getIntent();
+        statID = intent.getStringExtra("statID");
+
 
         Spinner categorySpinner = findViewById(R.id.category_spiner);
         Spinner typeSpinner = findViewById(R.id.type_spiner);
@@ -209,17 +208,31 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     private void writeStatementInfoToDB() {
 
-        final String uploadId = mDataBaseReference.push().getKey();
 
-        getLatLngFromAddress();
-        mDesc = descText.getText().toString();
-        mAdress = addressText.getText().toString();
-        mPrice = priceText.getText().toString();
-        userId = user.getUid();
-        userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId );
-        mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+        if(statID != null){
+            getLatLngFromAddress();
+            mDesc = descText.getText().toString();
+            mAdress = addressText.getText().toString();
+            mPrice = priceText.getText().toString();
+            userId = user.getUid();
+            userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, statID );
+            mDataBaseReference.child("Statement").child(statID).setValue(userStatement);
 
-        createMyStat(uploadId, mAdress, mPrice, mRooms, mFloor);
+            createMyStat(statID, mAdress, mPrice, mRooms, mFloor);
+        }else {
+
+            final String uploadId = mDataBaseReference.push().getKey();
+
+            getLatLngFromAddress();
+            mDesc = descText.getText().toString();
+            mAdress = addressText.getText().toString();
+            mPrice = priceText.getText().toString();
+            userId = user.getUid();
+            userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId);
+            mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+
+            createMyStat(uploadId, mAdress, mPrice, mRooms, mFloor);
+        }
 
     }
 
@@ -257,38 +270,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             case (R.id.upload_images):
                 uploadFlie();
                 break;
-//            case (R.id.address_edit):
-//                final PopupMenu menu = new PopupMenu(AddActivity.this, addressText);
-//                menu.getMenuInflater().inflate(R.menu.popup_for_address, menu.getMenu());
-//                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        switch (item.getItemId()){
-//                            case (R.id.from_gps):
-////                                    Intent intent = new Intent(AddActivity.this, GPSResultFragment.class);
-////                                    startActivityForResult(intent, GPS_REQUEST_CODE );
-//                                break;
-//                            case(R.id.from_address):
-//                                mAdress = addressText.getText().toString();
-//                                break;
-//                            case(R.id.from_map):
-////                                Intent intent = new Intent(this, MapActivity.class);
-////                                startActivityForResult(intent, ADDRESS_REQUEST_CODE);
-//                                break;
-//
-//                        }
-//                        return true;
-//                    }
-//                });
-//                menu.show();
-//                break;
         }
 
     }
 
-//    private void GetLocFromGPS() {
-//
-//    }
 
     private void uploadFlie() {
          if(imageUri !=null){
@@ -321,86 +306,6 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         galleryAction.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(galleryAction, "Select Picture"), GALLERY_REQUEST_CODE);
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == CAMERA_PERMISSION_CODE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                cameraPermissionResult(true);
-//            } else {
-//                cameraPermissionResult(false);
-//            }
-//        }
-//
-//
-//    }
-//
-//    private void getCameraPermission() {
-//        if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(AddActivity.this,
-//                    new String[]{Manifest.permission.CAMERA},
-//                    CAMERA_PERMISSION_CODE);
-//
-//        } else {
-//            cameraPermissionResult(true);
-//        }
-//    }
-//
-//    private void cameraPermissionResult(boolean cameraPermissionGranted) {
-//        if (cameraPermissionGranted) {
-//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            startActivityForResult(intent, CAMERA_REQUEST_CODE);
-//        } else {
-//            Toast.makeText(AddActivity.this, "CANCEL",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-//
-//            Bitmap photo = (Bitmap) data.getExtras().get("data");
-////            mUserImage.setImageBitmap(photo);
-//
-//
-//            mProgressDialog.setMessage("Loading...");
-//            mProgressDialog.show();
-//        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-//
-//            mProgressDialog.setMessage("Loading...");
-//            mProgressDialog.show();
-//
-//            imageUri = data.getData();
-//            final StorageReference myPath = mReference.child("FolderS").child(imageUri.getLastPathSegment() + ".jpg");
-//            myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                    Statement mStatement = new Statement(myPath.getDownloadUrl().toString());
-//                    String imageId = mDataBaseReference.push().getKey();
-//                    mDataBaseReference.child(imageId).setValue(mStatement);
-//
-////                    myPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-////                        @Override
-////                        public void onSuccess(Uri uri) {
-////                            mDataBaseReference.child(user.getUid()).child("mImageUrl").setValue(uri.toString());
-////
-////                        }
-////                    });
-//                }
-//            });
-//
-//        }
-//
-//    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
