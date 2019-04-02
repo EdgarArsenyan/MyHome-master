@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        BottomNavigationView navigation =  findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapFragment()).commit();
@@ -56,45 +56,24 @@ public class HomeActivity extends AppCompatActivity {
 
                     break;
                 case R.id.navigation_home:
-                    if(firebase.mAuth.getUid()!=null) {
+                    if (firebase.mAuth.getUid() != null) {
                         selectedFragment = new UserMainHomeFragment();
-                    }else{
+                    } else {
                         selectedFragment = new HomeUserFragment();
 
                     }
-                break;
+                    break;
 
                 case R.id.favorite:
                     selectedFragment = new FavoritListFragment();
-                break;
+                    break;
 
                 case R.id.navigation_notifications:
                     selectedFragment = new MapFragment();
-                break;
+                    break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.container, selectedFragment).commit();
             return true;
         }
     };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.search_item:
-                Intent intent1 = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent1);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

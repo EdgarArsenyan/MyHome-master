@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="200dp"
-        android:gravity="center_vertical">
+        android:layout_marginTop="250dp"
+        android:gravity="center_vertical"
+        android:background="@color/t"
+        android:layout_marginHorizontal="@dimen/fab_margin">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Create Account or Log In"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="30dp" />
 
 
@@ -27,7 +29,7 @@
             android:layout_width="@dimen/button_wigth"
             android:layout_height="@dimen/button_heigth"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/fab_max_margin"
+            android:layout_marginVertical="@dimen/fab_max_margin"
             android:layout_weight="1"
             android:background="@drawable/ok" />
 

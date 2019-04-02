@@ -9,14 +9,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginVertical="@dimen/fab_margin"
         android:gravity="center_horizontal"
-        android:text="MY FAVORITE LIST" />
+        android:textColor="@color/colorPrimary"
+        android:text="MY FAVORITE LIST"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/favorit_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/t">
 
     </android.support.v7.widget.RecyclerView>
 
