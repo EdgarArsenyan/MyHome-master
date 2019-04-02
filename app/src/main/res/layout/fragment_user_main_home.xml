@@ -39,7 +39,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="250dp"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/t">
 
 
         <TextView
@@ -129,17 +130,15 @@
 
 
 
-        <android.support.design.widget.FloatingActionButton
+        <ImageView
 
             android:id="@+id/add_statement_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginTop="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_gravity="end"
-            android:clickable="true"
-            app:fabCustomSize="15dp"
-            app:srcCompat="@drawable/add_btn" />
+            app:srcCompat="@drawable/add_button" />
     </LinearLayout>
 
 </RelativeLayout>

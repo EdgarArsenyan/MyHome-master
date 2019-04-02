@@ -43,16 +43,17 @@ public class UserMainHomeFragment extends Fragment {
 
     private static final int REQUEST_FOR_LOGIN = 10;
 
-    FloatingActionButton mAddStatement;
-    TextView mProfile, mNotification, mHistory, mStatement, mLogout, mUserName;
-    MyFirebase firebase = new MyFirebase();
-    UserInform user = new UserInform();
+    private ImageView mAddStatement;
+    private TextView mProfile, mNotification, mHistory, mStatement, mLogout, mUserName;
+    private MyFirebase firebase = new MyFirebase();
+    private UserInform user = new UserInform();
     private DatabaseReference mDataBaseReference;
-    String userID;
-    FirebaseAuth mAuth;
-    FirebaseUser firebaseUser;
-    CircleImageView  mUserProfileImage;
-    String nameSurname;
+    private String userID;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
+    private CircleImageView  mUserProfileImage;
+    private String nameSurname, name, surname, imageUrl, phone;
+
 
 
     public UserMainHomeFragment() {
@@ -78,19 +79,14 @@ public class UserMainHomeFragment extends Fragment {
         mDataBaseReference = FirebaseDatabase.getInstance().getReference("User");
         userID = firebaseUser.getUid();
 
-        mAddStatement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         readFromDB();
 
         clickLogoutAction();
         clickProfileAction();
         clickStatementAction();
+        clickAddButton();
         return view;
     }
 
@@ -99,6 +95,10 @@ public class UserMainHomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("surname", surname);
+                intent.putExtra("phone", phone);
+                intent.putExtra("imageUrl", imageUrl);
              startActivityForResult(intent, REQUEST_FOR_LOGIN);
             }
         });
@@ -113,6 +113,18 @@ public class UserMainHomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    public void clickAddButton(){
+
+        mAddStatement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void clickhistoryAction() {
@@ -156,6 +168,10 @@ public class UserMainHomeFragment extends Fragment {
                 user = dataSnapshot.getValue(UserInform.class);
                 nameSurname = (user.getmUserName() + "  " + user.getmUserSurname());
                 mUserName.setText(nameSurname);
+                name = user.getmUserName();
+                surname = user.getmUserSurname();
+                phone = user.getmUserPhoneNumber();
+                imageUrl = user.getmImageUrl();
                 userSetImage();
             }
 

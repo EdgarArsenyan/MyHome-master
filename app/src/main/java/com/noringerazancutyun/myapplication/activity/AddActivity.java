@@ -1,6 +1,7 @@
 package com.noringerazancutyun.myapplication.activity;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -52,7 +54,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public ProgressDialog mProgressDialog;
 
     private EditText descText, addressText, priceText;
-    private String statID;
+    private String  statID;
     private ImageView imageStatementBtn, saveStatementBtn, uploadImageBtn, homeImageView;
     private String mCategory, mType, mFloor, mRooms, mDesc, mAdress, mLocation, mPrice, userId;
     private double lat, lng;
@@ -274,26 +276,38 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    private String getFileExtension(Uri uri){
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
 
     private void uploadFlie() {
          if(imageUri !=null){
-             final StorageReference fileReference = mReference.child(System.currentTimeMillis() + ".jpg");
+             if (getFileExtension(imageUri).equals("jpg")) {
+                 final StorageReference fileReference = mReference.child(System.currentTimeMillis() + ".jpg");
 
 
-             fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                 @Override
-                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                     fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                         @Override
-                         public void onSuccess(Uri uri) {
-                             imageList.add(uri.toString());
+                 fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                     @Override
+                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                         fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                             @Override
+                             public void onSuccess(Uri uri) {
+                                 imageList.add(uri.toString());
 
-                         }
-                     });
+                             }
+                         });
 
-                 }
-             });
-             Toast.makeText(AddActivity.this, "UPLOAD", Toast.LENGTH_SHORT).show();
+                     }
+                 });
+                 Toast.makeText(AddActivity.this, "UPLOAD", Toast.LENGTH_SHORT).show();
+
+             }else{
+                 Toast.makeText(this, "Unrecognized file extension", Toast.LENGTH_SHORT).show();
+             }
+
 
          }else{
              Toast.makeText(this, "No file Selected", Toast.LENGTH_SHORT).show();

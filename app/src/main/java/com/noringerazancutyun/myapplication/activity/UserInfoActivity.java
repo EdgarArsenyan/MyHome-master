@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,92 +54,69 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int GALLERY_REQUEST_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
-    private static final int CAMERA_PERMISSION_CODE = 10;
     private static final String TAG = "UserInfoActivity";
 
 
-    private EditText mEmail, mPassword, mName, mSurname, mPhone;
-    private ImageView mSaveButton, mUserImage;
+    private EditText mName, mSurname, mPhone;
+    private ImageView mSaveButton;
+    private CircleImageView mUserImage;
     private FirebaseAuth mAuth;
-    private FirebaseUser firebaseUser;
-
+    private FirebaseUser user;
 
 
     private DatabaseReference mDataBaseReference;
     private StorageReference mReference;
-    private String userImage;
+    private String userImage, userID, name, surname, phone, image;
     UserInform userInfo;
-     private  Uri imageUri;
+    private Uri imageUri;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        mEmail = findViewById(R.id.email_text);
-        mPassword = findViewById(R.id.password_text);
+        user =mAuth.getCurrentUser();
         mName = findViewById(R.id.user_name);
         mSurname = findViewById(R.id.user_surname);
         mPhone = findViewById(R.id.user_phone);
         mUserImage = findViewById(R.id.user_image);
         mSaveButton = findViewById(R.id.create_img_register_activity);
 
-        mProgressDialog = new ProgressDialog(UserInfoActivity.this);
-
-        registerForContextMenu(mUserImage);
-
-        mDataBaseReference = FirebaseDatabase.getInstance().getReference("User");
+        mDataBaseReference = FirebaseDatabase.getInstance().getReference();
         mReference = FirebaseStorage.getInstance().getReference();
-//        userID = firebaseUser.getUid();
 
+        userID =user.getUid();
         mSaveButton.setOnClickListener(this);
+        mUserImage.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
 
-
-
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-        getMenuInflater().inflate(R.menu.gallery_or_camera_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.from_gallery:
-                openGallery();
-                break;
-            case R.id.from_camera:
-                getCameraPermission();
-                break;
-            case R.id.cancel:
-                break;
+        if(name!= null){
+            checkUser();
         }
-        return super.onContextItemSelected(item);
+
+
+
     }
+
 
     private void writeToDataBase() {
 
-        String name = mName.getText().toString();
-        String surname = mSurname.getText().toString();
-        String phone = mPhone.getText().toString();
-        String image;
-        if (userImage==null){
-        image = "no photo";
-        }else{
-            image = userImage;
+         name = mName.getText().toString();
+         surname = mSurname.getText().toString();
+         phone = mPhone.getText().toString();
+        if (image == null) {
+            image = "no photo";
         }
         userInfo = new UserInform(name, surname, phone, image);
-        mDataBaseReference.child(firebaseUser.getUid()).setValue(userInfo);
+        mDataBaseReference.child("User").child(userID).setValue(userInfo);
     }
 
     @Override
@@ -148,13 +126,15 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
             case (R.id.create_img_register_activity):
 
-                if (validateForm()){
-//                createAccount(email, password);
-                Toast.makeText(UserInfoActivity.this, "User createrd", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(UserInfoActivity.this, HomeActivity.class);
-                writeToDataBase();
-                startActivity(intent);}
-
+                if (validateForm()) {
+                    writeToDataBase();
+                    Toast.makeText(UserInfoActivity.this, "User createrd", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(UserInfoActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case (R.id.user_image):
+                openGallery();
                 break;
 
         }
@@ -170,59 +150,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                cameraPermissionResult(true);
-            } else {
-                cameraPermissionResult(false);
-            }
-        }
-
-
-    }
-
-    private void getCameraPermission() {
-        if (ContextCompat.checkSelfPermission(UserInfoActivity.this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(UserInfoActivity.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION_CODE);
-
-        } else {
-            cameraPermissionResult(true);
-        }
-    }
-
-    private void cameraPermissionResult(boolean cameraPermissionGranted) {
-        if (cameraPermissionGranted) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, CAMERA_REQUEST_CODE);
-        } else {
-            Toast.makeText(UserInfoActivity.this, "CANCEL",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            mUserImage.setImageBitmap(photo);
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
 
 
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.show();
-        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.show();
 
             imageUri = data.getData();
             final StorageReference myPath = mReference.child("USERBOX").child(imageUri.getLastPathSegment() + ".jpg");
@@ -233,10 +165,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     myPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-//                            mDataBaseReference.child(firebaseUser.getUid()).child("mImageUrl").setValue(uri.toString());
-                            userImage = uri.toString();
-
-
+                            image = uri.toString();
                         }
                     });
                 }
@@ -251,7 +180,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         boolean valid = true;
 
 
-
         String name = mName.getText().toString();
         if (TextUtils.isEmpty(name)) {
             mName.setError("Required.");
@@ -259,6 +187,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         } else {
             mName.setError(null);
         }
+
 
         String surname = mSurname.getText().toString();
         if (TextUtils.isEmpty(surname)) {
@@ -277,6 +206,25 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }
 
         return valid;
+    }
+
+    private void checkUser(){
+
+        Intent intent = getIntent();
+        surname = intent.getStringExtra("surname");
+        phone = intent.getStringExtra("phone");
+        image = intent.getStringExtra("imageUrl");
+        mName.setText(name);
+        mSurname.setText(surname);
+        mPhone.setText(phone);
+        Glide.with(this)
+                .load(image)
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.avatar_icon)
+                .fitCenter()
+
+                .into(mUserImage);
+
     }
 
 

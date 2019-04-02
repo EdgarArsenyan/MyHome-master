@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.UserInfoActivity"
+    android:background="@color/t"
 >
 
 
@@ -13,13 +14,13 @@
         android:layout_height="250dp"
         android:background="@drawable/colapse"/>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginHorizontal="130dp"
-        android:layout_marginTop="60dp"
-        app:srcCompat="@drawable/add_user_image" />
+        android:layout_width="149dp"
+        android:layout_height="155dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/avatar_icon" />
 
 
 
@@ -47,11 +48,6 @@
             android:textColorHint="@color/colorAccent"
             android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/user_surname"
@@ -64,11 +60,7 @@
             android:textColorHint="@color/colorAccent"
             android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimaryDark"/>
+
 
         <com.vicmikhailau.maskededittext.MaskedEditText
             android:id="@+id/user_phone"
@@ -81,11 +73,6 @@
             app:mask="(###)##-###-###" />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimaryDark"/>
 
 
 

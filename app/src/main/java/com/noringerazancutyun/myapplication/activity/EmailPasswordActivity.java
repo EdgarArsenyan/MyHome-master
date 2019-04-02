@@ -30,7 +30,7 @@ public class EmailPasswordActivity extends BaseActivity implements
     private EditText mEmailField;
     private EditText mPasswordField;
     private ImageView mLoginImg, mCreateImg;
-    private UserInform user = new UserInform();
+
 
 
     @Override
@@ -44,6 +44,7 @@ public class EmailPasswordActivity extends BaseActivity implements
         mCreateImg = findViewById(R.id.create_img_email_activity);
         mLoginImg.setOnClickListener(this);
         mCreateImg.setOnClickListener(this);
+
     }
 
     @Override
@@ -63,10 +64,9 @@ public class EmailPasswordActivity extends BaseActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            user.setUserId(String.valueOf(System.currentTimeMillis()));
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = firebase.mAuth.getCurrentUser();
-                            Intent intent = new Intent(EmailPasswordActivity.this, UserInfoActivity.class);
+                            Intent intent = new Intent (EmailPasswordActivity.this, UserInfoActivity.class);
                             startActivity(intent);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -92,7 +92,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = firebase.mAuth.getCurrentUser();
-                            Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity.class);
+                            Intent intent = new Intent (EmailPasswordActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -102,6 +102,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                     }
                 });
     }
+
 
 
     private boolean validateForm() {
@@ -132,9 +133,6 @@ public class EmailPasswordActivity extends BaseActivity implements
         int i = v.getId();
         if (i == R.id.create_img_email_activity) {
             createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-            Intent intent = new Intent(EmailPasswordActivity.this, UserInfoActivity.class);
-            startActivity(intent);
-
         } else if (i == R.id.login_img_email_activity) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
