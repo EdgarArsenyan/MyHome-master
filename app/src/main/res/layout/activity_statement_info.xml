@@ -55,6 +55,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/t"
             >
 
 
@@ -62,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/t"
+
 
 
                 >
@@ -166,8 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="122dp"
-                android:orientation="vertical"
-                android:background="@color/t">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -362,7 +362,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            tools:context=".fragment.MapFragment"></fragment>
+            tools:context=".activity.StatementInfoActivity"></fragment>
 
     </FrameLayout>
 

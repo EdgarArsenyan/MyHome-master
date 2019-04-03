@@ -37,6 +37,7 @@ import com.noringerazancutyun.myapplication.roomDB.MyStatData;
 import com.noringerazancutyun.myapplication.roomDB.StatData;
 import com.noringerazancutyun.myapplication.util.App;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        mReference = FirebaseStorage.getInstance().getReference("images").child(user.getUid());
+        String statFile = String.valueOf(System.currentTimeMillis());
+        mReference = FirebaseStorage.getInstance().getReference("images").child(user.getUid()).child(statFile);
         mDataBaseReference = FirebaseDatabase.getInstance().getReference();
         mProgressDialog = new ProgressDialog(AddActivity.this);
 
@@ -210,30 +212,36 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     private void writeStatementInfoToDB() {
 
+        if(imageList.isEmpty()){
+            return;
 
-        if(statID != null){
-            getLatLngFromAddress();
-            mDesc = descText.getText().toString();
-            mAdress = addressText.getText().toString();
-            mPrice = priceText.getText().toString();
-            userId = user.getUid();
-            userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, statID );
-            mDataBaseReference.child("Statement").child(statID).setValue(userStatement);
-
-            createMyStat(statID, mAdress, mPrice, mRooms, mFloor);
         }else {
 
-            final String uploadId = mDataBaseReference.push().getKey();
 
-            getLatLngFromAddress();
-            mDesc = descText.getText().toString();
-            mAdress = addressText.getText().toString();
-            mPrice = priceText.getText().toString();
-            userId = user.getUid();
-            userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId);
-            mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+            if (statID != null) {
+                getLatLngFromAddress();
+                mDesc = descText.getText().toString();
+                mAdress = addressText.getText().toString();
+                mPrice = priceText.getText().toString();
+                userId = user.getUid();
+                userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, statID);
+                mDataBaseReference.child("Statement").child(statID).setValue(userStatement);
 
-            createMyStat(uploadId, mAdress, mPrice, mRooms, mFloor);
+                createMyStat(statID, mAdress, mPrice, mRooms, mFloor);
+            } else {
+
+                final String uploadId = mDataBaseReference.push().getKey();
+
+                getLatLngFromAddress();
+                mDesc = descText.getText().toString();
+                mAdress = addressText.getText().toString();
+                mPrice = priceText.getText().toString();
+                userId = user.getUid();
+                userStatement = new Statement(mCategory, mType, mPrice, mRooms, mFloor, mLocation, mAdress, mDesc, lat, lng, imageList, userId, uploadId);
+                mDataBaseReference.child("Statement").child(uploadId).setValue(userStatement);
+
+                createMyStat(uploadId, mAdress, mPrice, mRooms, mFloor);
+            }
         }
 
     }
@@ -263,8 +271,14 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
             case (R.id.save_statement_btn):
                 writeStatementInfoToDB();
-                Intent intent = new Intent(AddActivity.this, HomeActivity.class);
-                startActivity(intent);
+                if(imageList.isEmpty()){
+                    Toast.makeText(AddActivity.this, "Upload photos and save", Toast.LENGTH_SHORT).show();
+
+                }else {
+
+                    Intent intent = new Intent(AddActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case (R.id.add_images):
                 openGallery();
@@ -285,7 +299,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     private void uploadFlie() {
          if(imageUri !=null){
-             if (getFileExtension(imageUri).equals("jpg")) {
+             if (getFileExtension(imageUri).equals("jpg") || getFileExtension(imageUri).equals("png") || getFileExtension(imageUri).equals("jpeg")
+                     || getFileExtension(imageUri).equals("JPG") || getFileExtension(imageUri).equals("webp")) {
                  final StorageReference fileReference = mReference.child(System.currentTimeMillis() + ".jpg");
 
 
@@ -295,7 +310,17 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                          fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                              @Override
                              public void onSuccess(Uri uri) {
-                                 imageList.add(uri.toString());
+
+                                 if(imageList.size()<10) {
+                                     if(checkImageSize(uri.toString())<2048){
+                                     imageList.add(uri.toString());
+                                 }else{
+                                         Toast.makeText(AddActivity.this, "Photo size should not be more than 2 MB.", Toast.LENGTH_SHORT).show();
+
+                                     }
+                                 }else{
+                                     Toast.makeText(AddActivity.this, "Not possible to store more than 10 photos", Toast.LENGTH_SHORT).show();
+                                 }
 
                              }
                          });
@@ -332,5 +357,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     .load(imageUri)
                     .into(homeImageView);
         }
+    }
+
+    public long checkImageSize(String path){
+        File file = new File(path);
+        long length = file.length()/1024;
+        return length;
     }
 }

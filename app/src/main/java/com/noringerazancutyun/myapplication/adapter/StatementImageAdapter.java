@@ -44,7 +44,7 @@ public class StatementImageAdapter extends RecyclerView.Adapter<StatementImageAd
         String image = mImage.get(position);
         Glide.with(context)
                 .load(image)
-                .centerInside()
+                .centerCrop()
                 .into(holder.imageView);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {

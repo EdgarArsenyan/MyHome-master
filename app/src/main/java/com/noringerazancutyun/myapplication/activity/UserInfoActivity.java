@@ -71,7 +71,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private DatabaseReference mDataBaseReference;
     private StorageReference mReference;
-    private String userImage, userID, name, surname, phone, image;
+    private String email, userID, name, surname, phone, image;
     UserInform userInfo;
     private Uri imageUri;
 
@@ -96,7 +96,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mUserImage.setOnClickListener(this);
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
+        email = intent.getStringExtra("email");
 
         if(name!= null){
             checkUser();
@@ -115,7 +115,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         if (image == null) {
             image = "no photo";
         }
-        userInfo = new UserInform(name, surname, phone, image);
+        userInfo = new UserInform(name, surname, phone, image, email);
         mDataBaseReference.child("User").child(userID).setValue(userInfo);
     }
 

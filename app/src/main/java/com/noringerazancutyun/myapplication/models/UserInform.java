@@ -14,11 +14,12 @@ public class UserInform {
 
 
 
-    public UserInform(String mUserName,  String mUserSurname, String mUserPhoneNumber, String mImageUrl) {
+    public UserInform(String mUserName,  String mUserSurname, String mUserPhoneNumber, String mImageUrl, String mUserEmail) {
         this.mUserName = mUserName;
         this.mUserSurname = mUserSurname;
         this.mUserPhoneNumber = mUserPhoneNumber;
         this.mImageUrl = mImageUrl;
+        this.mUserEmail = mUserEmail;
     }
 
     public UserInform(){

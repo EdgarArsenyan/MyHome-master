@@ -54,7 +54,7 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -67,6 +67,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = firebase.mAuth.getCurrentUser();
                             Intent intent = new Intent (EmailPasswordActivity.this, UserInfoActivity.class);
+                            intent.putExtra("email", email);
                             startActivity(intent);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

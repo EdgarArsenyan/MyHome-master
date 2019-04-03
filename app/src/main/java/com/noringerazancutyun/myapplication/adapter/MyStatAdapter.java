@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.activity.AddActivity;
 import com.noringerazancutyun.myapplication.activity.MyStat;
@@ -48,6 +52,7 @@ public class MyStatAdapter extends RecyclerView.Adapter<MyStatAdapter.MyStatView
         holder.floor.setText(data.get(position).getFloor());
         holder.statID = data.get(position).getStatID();
         holder.imageUrl = data.get(position).getImageUrl();
+        holder.user = data.get(position).getUserID();
 
         Glide.with(context)
                 .load(holder.imageUrl)
@@ -71,13 +76,18 @@ public class MyStatAdapter extends RecyclerView.Adapter<MyStatAdapter.MyStatView
         private ImageView delete;
         private String statID;
         private String imageUrl;
+        private String user;
 
 
         public MyStatViewHolder(final View itemView) {
             super(itemView);
 
             final DatabaseReference mDataref;
+            final StorageReference mReference;
+
             mDataref = FirebaseDatabase.getInstance().getReference();
+            mReference = FirebaseStorage.getInstance().getReference("images");
+
             price = itemView.findViewById(R.id.my_stat_prica);
             address = itemView.findViewById(R.id.my_stat_address);
             rooms = itemView.findViewById(R.id.my_stat_rooms);
@@ -92,7 +102,16 @@ public class MyStatAdapter extends RecyclerView.Adapter<MyStatAdapter.MyStatView
                 public void onClick(View v) {
                     onDeleteListener.onDelete(data.get(getAdapterPosition()));
                     data.remove(getAdapterPosition());
+//                    mReference.child(user).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//                            Toast.makeText(context, "Statement deleted", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    });
                     mDataref.child("Statement").child(statID).removeValue();
+
+
                     notifyItemRemoved(getAdapterPosition());
                 }
             });

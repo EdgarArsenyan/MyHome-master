@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:layout_marginTop="250dp"
         android:gravity="center_vertical"
-        android:background="@color/t"
+
         android:layout_marginHorizontal="@dimen/fab_margin">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Create Account or Log In"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30dp" />
 
 

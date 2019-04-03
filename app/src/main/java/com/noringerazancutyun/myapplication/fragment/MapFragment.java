@@ -56,10 +56,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
     private DatabaseReference mDataBaseReference;
     private ImageView searchBtn;
 
-//    private double lat, lng;
     SupportMapFragment mapFragment;
     private GoogleMap mMap;
-    Statement stat;
     Map<Marker, Statement> map = new HashMap<>();
     public String category, location;
 
@@ -88,8 +86,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
 
             }
         });
-        category = null;
-        location = null;
+//        category = null;
+//        location = null;
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -131,8 +129,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
 
     private void readStatementInfoFromDB() {
 
-        final BitmapDescriptor rent_icon = BitmapDescriptorFactory.fromResource(R.drawable.rent);
-        final BitmapDescriptor sale_icon = BitmapDescriptorFactory.fromResource(R.drawable.sale);
+        final BitmapDescriptor rent_icon = BitmapDescriptorFactory.fromResource(R.drawable.house_rent);
+        final BitmapDescriptor sale_icon = BitmapDescriptorFactory.fromResource(R.drawable.house_sale);
         mDataBaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -169,8 +167,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
 
                     String price = myData.child("price").getValue(String.class);
                     Log.d(TAG, "onDataChange: " + "" + lat + lng);
-                    Log.d(TAG, "get category: " + "" + stat.getCategory());
-                    Log.d(TAG, "get dist: " + "" + stat.getDistrict());
 
                     if(lat!=0 && lng!=0){
 
@@ -180,7 +176,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SearchF
                         } else {
                             marker.setIcon(sale_icon);
                         }
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12f));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13f));
                         map.put(marker, stat);
                     }
 

@@ -109,6 +109,11 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
         userID = intent.getStringExtra("userID");
         lat = intent.getDoubleExtra("lat", 0.0d);
         lng = intent.getDoubleExtra("lng", 0.0d);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         recyclerConstructor();
 
         readStatData();
@@ -158,6 +163,8 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
                 mStatType.setText(stat.getType());
                 mStatDesc.setText(stat.getDesc());
                 mStatFloor.setText(stat.getFloor());
+                lat = stat.getLat();
+                lng = stat.getLng();
             }
 
             @Override
@@ -202,8 +209,9 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
         mMap.isMyLocationEnabled();
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Yerevan"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 17f));
     }
+
 
     @Override
     public void onClick(View v) {
