@@ -149,6 +149,11 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
         });
     }
 
+    /**
+     * This method reads  Statement data from firebase DB and shows in activity
+     */
+
+
     public void readStatData() {
 
         mDataref.child("Statement").child(myID).addValueEventListener(new ValueEventListener() {
@@ -173,6 +178,10 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
             }
         });
     }
+
+    /**
+     * This method reads  USER data from firebase DB and shows in activity
+     */
 
     public void readUserData(){
         mDataref.child("User").child(userID).addValueEventListener(new ValueEventListener() {
@@ -229,6 +238,10 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+    /**
+     * This method checks permission and if possible makes a call
+     */
+
     private void callUser() {
 
             Intent intentCall=new Intent(Intent.ACTION_CALL);
@@ -245,10 +258,15 @@ public class StatementInfoActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+
     private  void requestPermission(){
         ActivityCompat.requestPermissions(StatementInfoActivity.this,new String[]{Manifest.permission.CALL_PHONE},1);
     }
 
+    /**
+     * This method adds a item to favorite list.
+     * and add to local DB new model;
+     */
 
     private void createFavorite() {
 

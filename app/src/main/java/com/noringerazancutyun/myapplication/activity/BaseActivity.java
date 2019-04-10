@@ -14,6 +14,7 @@ public class BaseActivity extends AppCompatActivity {
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
 
+
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -23,6 +24,7 @@ public class BaseActivity extends AppCompatActivity {
 
         mProgressDialog.show();
     }
+
 
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {

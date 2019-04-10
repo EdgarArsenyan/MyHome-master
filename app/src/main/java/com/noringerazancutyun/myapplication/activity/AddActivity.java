@@ -62,7 +62,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     private Statement userStatement;
     private ArrayList<String> imageList = new ArrayList<>();
-    private ArrayList<String> statList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,12 +189,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         });
     }
 
+    /**
+     * in this method, from the  String field address, we get the latitude and longitude
+     */
 
     private void getLatLngFromAddress() {
         List<Address> mAddress = new ArrayList<>();
         Geocoder geoCoder = new Geocoder(AddActivity.this);
-
-
 
         try {
 
@@ -203,12 +204,17 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if (mAddress.size() > 0) {
             Address location = mAddress.get(0);
             lat = location.getLatitude();
             lng = location.getLongitude();
         }
     }
+
+    /**
+     *     when the user clicks on the save button, all data is saved in firebase DB  and in the Local DB to show in the My Statements  list
+     */
 
     private void writeStatementInfoToDB() {
 
@@ -256,6 +262,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         model.setAddress(address);
         model.setRoom(rooms);
         model.setFloor(floors);
+
         if(imageList != null) {
             model.setImageUrl(imageList.get(0));
         }else model.setImageUrl("no Photo");
@@ -280,9 +287,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     startActivity(intent);
                 }
                 break;
+
             case (R.id.add_images):
                 openGallery();
                 break;
+
             case (R.id.upload_images):
                 uploadFlie();
                 break;
@@ -291,14 +300,18 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private String getFileExtension(Uri uri){
+
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
+
     }
 
 
     private void uploadFlie() {
+
          if(imageUri !=null){
+
              if (getFileExtension(imageUri).equals("jpg") || getFileExtension(imageUri).equals("png") || getFileExtension(imageUri).equals("jpeg")
                      || getFileExtension(imageUri).equals("JPG") || getFileExtension(imageUri).equals("webp")) {
                  final StorageReference fileReference = mReference.child(System.currentTimeMillis() + ".jpg");
@@ -339,12 +352,16 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
          }
     }
 
+
+
     public void openGallery() {
         Intent galleryAction = new Intent();
         galleryAction.setType("image/*");
         galleryAction.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(galleryAction, "Select Picture"), GALLERY_REQUEST_CODE);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -358,6 +375,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     .into(homeImageView);
         }
     }
+
+
 
     public long checkImageSize(String path){
         File file = new File(path);

@@ -54,6 +54,7 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     }
 
+
     private void createAccount(final String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -138,6 +139,7 @@ public class EmailPasswordActivity extends BaseActivity implements
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
     }
+
 
     @Override
     public void onStop() {

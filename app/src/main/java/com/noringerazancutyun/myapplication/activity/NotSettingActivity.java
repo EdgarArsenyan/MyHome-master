@@ -8,6 +8,11 @@ import android.widget.ImageView;
 import com.noringerazancutyun.myapplication.R;
 import com.noringerazancutyun.myapplication.fragment.NotAddFragment;
 
+
+/**
+ * this activity is not yet written
+ */
+
 public class NotSettingActivity extends AppCompatActivity implements NotAddFragment.OnInputSelected{
 
     ImageView addNotButton;

@@ -44,7 +44,7 @@ public class UserMainHomeFragment extends Fragment {
     private static final int REQUEST_FOR_LOGIN = 10;
 
     private ImageView mAddStatement;
-    private TextView mProfile, mNotification, mHistory, mStatement, mLogout, mUserName;
+    private TextView mProfile, mNotification, mStatement, mLogout, mUserName;
     private MyFirebase firebase = new MyFirebase();
     private UserInform user = new UserInform();
     private DatabaseReference mDataBaseReference;
@@ -68,7 +68,6 @@ public class UserMainHomeFragment extends Fragment {
         mAddStatement = view.findViewById(R.id.add_statement_button);
         mProfile = view.findViewById(R.id.profile_txt);
         mNotification = view.findViewById(R.id.notification_txt);
-        mHistory = view.findViewById(R.id.history_txt);
         mUserProfileImage = view.findViewById(R.id.user_profie_image);
         mStatement = view.findViewById(R.id.statement_txt);
         mLogout = view.findViewById(R.id.logout_txt);
@@ -84,13 +83,13 @@ public class UserMainHomeFragment extends Fragment {
         readFromDB();
 
         clickLogoutAction();
-        clickProfileAction();
+        clickProfileSettingsAction();
         clickStatementAction();
         clickAddButton();
         return view;
     }
 
-    public void clickProfileAction() {
+    public void clickProfileSettingsAction() {
         mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,15 +126,6 @@ public class UserMainHomeFragment extends Fragment {
 
     }
 
-    public void clickhistoryAction() {
-        mHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     public void clickStatementAction() {
         mStatement.setOnClickListener(new View.OnClickListener() {
